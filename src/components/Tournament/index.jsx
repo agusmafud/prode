@@ -1,34 +1,61 @@
+import React from 'react';
+import {
+  Accordion,
+  Center,
+  Text,
+} from '@chakra-ui/react';
+
+import Group from 'components/Group';
+import { getGroupTeamsData, getGroupMatchesData } from 'helpers';
+
 const Tournament = ({
+  user,
   teams,
   matches,
+  groups,
+  serverProps,
 }) => (
   <>
-    <h2>Teams</h2>
-    {teams.map((team) => <p key={team}>{team}</p>)}
-    <hr class="solid" />
-    <h2>Matches</h2>
-    {matches.map((match) => (
-      <div key={match.date}>
-        <p>{`Date: ${match.date}`}</p>
-        <p>{`Team A: ${match.teamA.team}`}</p>
-        <p>
-          {match.teamA.score !== null
-            ? `Score: ${match.teamA.score}`
-            : 'No score'
-          }
-        </p>
-        <p>{`Team B: ${match.teamB.team}`}</p>
-        <p>
-          {match.teamB.score !== null
-            ? `Score: ${match.teamB.score}`
-            : 'No score'
-          }
-        </p>
-        <hr class="solid" />
-      </div>
-    ))}
+    <Center>
+      <Text
+        fontSize="4xl"
+        marginBottom={4}
+      >
+        {user.displayName}
+      </Text>
+    </Center>
+    <Accordion
+      allowMultiple
+      defaultIndex={[]}
+      width="100%"
+      maxWidth={800}
+      minWidth={400}
+      marginX="auto"
+      borderLeftWidth="1px"
+      borderRightWidth="1px"
+      borderColor="gray.200"
+    >
+      {groups.map((group) => {
+        const {
+          teams: groupTeams,
+          matches: groupMatches,
+          ...groupData
+        } = group;
+        const groupTeamsData = getGroupTeamsData({ groupTeams, teams });
+        const groupMatchesData = getGroupMatchesData({ groupMatches, matches });
+
+        return (
+          <Group
+            key={group.id}
+            group={groupData}
+            teams={groupTeamsData}
+            matches={groupMatchesData}
+            serverProps={serverProps}
+          />
+        );
+      })}
+    </Accordion>
   </>
 );
-  
 
 export default Tournament;

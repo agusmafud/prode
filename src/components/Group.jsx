@@ -1,12 +1,10 @@
 import React from 'react';
 import {
   AccordionItem,
-  AccordionButton,
   AccordionPanel,
-  AccordionIcon,
-  Box,
 } from '@chakra-ui/react';
 
+import AccordionButton from 'components/AccordionButton';
 import Match from 'components/Match';
 import { getMatchTeamsData } from 'helpers';
 
@@ -14,24 +12,12 @@ const Group = ({
   group,
   teams,
   matches,
-  serverProps,
+  dbProps,
 }) => (
-  <AccordionItem key={group.id}>
-    <AccordionButton
-      _expanded={{
-        borderBottomWidth: '1px',
-        borderColor: 'gray.200',
-      }}
-    >
-      <Box flex="1" textAlign="left">
-        {group.label}
-      </Box>
-      <AccordionIcon />
-    </AccordionButton>
-    <AccordionPanel
-      padding={8}
-    >
-      {matches.map((match) => {
+  <AccordionItem>
+    <AccordionButton label={group.label} />
+    <AccordionPanel padding={0}>
+      {matches.map((match, index) => {
         const {
           teams: matchTeams,
           ...matchData
@@ -41,9 +27,10 @@ const Group = ({
         return (
           <Match
             key={match.date + match.teams[0]}
+            index={index}
             match={matchData}
             teams={matchTeamsData}
-            serverProps={serverProps}
+            dbProps={dbProps}
           />
         );
       })}

@@ -17,7 +17,11 @@ const Counter = ({
     min: 0,
     max: 999,
     value,
-    onChange: (newValue) => setValue({ id, newValue }),
+    // TODO: Revisar onChange para el caso undefined
+    onChange: (newValue) => setValue({
+      id,
+      newValue: newValue === '' ? 0 : newValue,
+    }),
   });
   const incrementButtonPropsOne = getIncrementButtonProps();
   const decrementButtonPropsOne = getDecrementButtonProps();
@@ -25,18 +29,37 @@ const Counter = ({
 
   return (
     <Grid
+      maxW="120px"
       templateRows="repeat(2, 1fr)"
       templateColumns="repeat(2, 1fr)"
-      gap={2}
-      border="1px solid grey"
+      border="1px solid"
+      borderColor="gray.200"
+      background="white"
+      padding={1}
+      alignSelf="center"
     >
-      <GridItem rowSpan={1} colSpan={2}>
-        <Input {...inputPropsOne} />
+      <GridItem
+        rowSpan={1}
+        colSpan={2}
+        mb={1}
+      >
+        <Input
+          {...inputPropsOne}
+          fontSize={20}
+          fontWeight={600}
+          textAlign="center"
+        />
       </GridItem>
-      <GridItem>
+      <GridItem
+        display="flex"
+        justifyContent="center"
+      >
         <Button {...decrementButtonPropsOne}>-</Button>
       </GridItem>
-      <GridItem>
+      <GridItem
+        display="flex"
+        justifyContent="center"
+      >
         <Button {...incrementButtonPropsOne}>+</Button>
       </GridItem>
     </Grid>

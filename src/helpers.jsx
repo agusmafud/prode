@@ -1,3 +1,5 @@
+import React from 'react';
+
 export const getTeamLabel = ({
   teamCode,
   teams,
@@ -38,4 +40,24 @@ export const getGoals = ({ teamId, results }) => {
   );
 
   return teamResult?.goals ?? 0;
+};
+
+export const renderUnixTime = (unixTime) => {
+  const date = new Date(unixTime * 1000);
+  const dayNames = ['dom', 'lun', 'mar', 'miér', 'jue', 'vie', 'sáb'];
+  const dayName = dayNames[date.getDay()];
+  const dayNumber = date.getDate();
+  const monthNames = ['ene', 'febr', 'marzo', 'abr', 'mayo', 'jun', 'jul', 'ag', 'sept', 'oct', 'nov', 'dic'];
+  const month = monthNames[date.getMonth()];
+  const hour = date.getHours();
+  const minutes = date.getMinutes();
+  const renderedMinutes = `${minutes < 10 ? '0' : ''}${minutes}`;
+  const renderedTime = (
+    <span>
+      {`${dayName} ${dayNumber}-${month} `}
+      {`${hour}:${renderedMinutes}hs`}
+    </span>
+  );
+
+  return renderedTime;
 };

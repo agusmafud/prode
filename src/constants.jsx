@@ -250,9 +250,45 @@ export const matches = [
     date: new Date('2 December 2022 12:00:00 UTC-03:00'),
     teams: ['GH', 'UY'],
   },
+  {
+    id: '100',
+    date: new Date('1 November 2022 13:00:00 UTC-03:00'),
+    teams: ['QA', 'EC'],
+  },
+  {
+    id: '101',
+    date: new Date('1 November 2022 13:00:00 UTC-03:00'),
+    teams: ['SN', 'NL'],
+  },
+  {
+    id: '102',
+    date: new Date('1 November 2022 15:00:00 UTC-03:00'),
+    teams: ['QA', 'SN'],
+  },
+  {
+    id: '103',
+    date: new Date('1 November 2022 13:00:00 UTC-03:00'),
+    teams: ['EC', 'NL'],
+  },
+  {
+    id: '104',
+    date: new Date('1 November 2022 12:00:00 UTC-03:00'),
+    teams: ['QA', 'NL'],
+  },
+  {
+    id: '105',
+    date: new Date('1 November 2022 12:00:00 UTC-03:00'),
+    teams: ['EC', 'SN'],
+  },
 ];
 
 export const groups = [
+  {
+    id: 'groupTest',
+    label: 'Grupo de Prueba',
+    teams: ['QA', 'EC', 'SN', 'NL'],
+    matches: ['100', '101', '102', '103', '104', '105'],
+  },
   {
     id: 'groupA',
     label: 'Grupo A',

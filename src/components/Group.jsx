@@ -23,6 +23,9 @@ const Group = ({
           ...matchData
         } = match;
         const matchTeamsData = getMatchTeamsData({ matchTeams, teams });
+        const limitTime = 5 * 60;
+        const scoreEnabled = matchData.date.seconds > (dbProps.time + limitTime);
+        const minutesLeft = Math.trunc((match.date.seconds - dbProps.time - limitTime) / 60);
 
         return (
           <Match
@@ -30,6 +33,8 @@ const Group = ({
             index={index}
             match={matchData}
             teams={matchTeamsData}
+            scoreEnabled={scoreEnabled}
+            minutesLeft={minutesLeft}
             dbProps={dbProps}
           />
         );

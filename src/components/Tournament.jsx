@@ -8,6 +8,11 @@ import Group from 'components/Group';
 import TournamentData from 'components/TournamentData';
 import { getGroupTeamsData, getGroupMatchesData } from 'helpers';
 
+/* const tournamentIsEqual = (prevMovie, nextMovie) => (
+  return prevMovie.title === nextMovie.title
+    && prevMovie.releaseDate === nextMovie.releaseDate;
+); */
+
 const Tournament = ({
   user,
   teams,

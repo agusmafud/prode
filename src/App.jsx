@@ -11,17 +11,23 @@ import useGroups from 'hooks/database/useGroups';
 import useMatches from 'hooks/database/useMatches';
 import useTeams from 'hooks/database/useTeams';
 import { firebaseConfig } from 'constants';
+import useTime from 'hooks/useTime';
 
 const App = () => {
   const firebaseApp = useFirebaseApp(firebaseConfig);
   const { user, handleSignIn } = useFirebaseAuth(firebaseApp);
+  const time = useTime();
 
   const db = useFirestore(firebaseApp);
   const teams = useTeams(db);
   const matches = useMatches(db);
   const groups = useGroups(db);
   // TODO: Add to context for avoid multiple drilling down
-  const dbProps = { db, uid: user?.uid };
+  const dbProps = {
+    db,
+    uid: user?.uid,
+    time,
+  };
 
   const showTournament = teams && matches && groups;
 

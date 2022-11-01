@@ -35,7 +35,7 @@ export const getMatchTeamsData = ({ matchTeams, teams }) => {
 };
 
 export const getGoals = ({ teamId, results }) => {
-  const teamResult = results.find(
+  const teamResult = results?.find(
     ((teamScore) => teamScore.id === teamId),
   );
 
@@ -60,4 +60,64 @@ export const renderUnixTime = (unixTime) => {
   );
 
   return renderedTime;
+};
+
+const verifyAreResultsValid = ({ userResults, actualResults }) => {
+  if (userResults?.length !== 2 || actualResults?.length !== 2) return false;
+  if (!actualResults.find((res) => res.id === userResults[0].id)) return false;
+  if (!actualResults.find((res) => res.id === userResults[1].id)) return false;
+
+  return true;
+};
+
+const createFullResults = ({ userResults, actualResults }) => {
+  // TODO: HACER QUE SI EL USUARIO NO PUSO NADA, EL DEFAULT SEA 0 - 0
+  const teamAFullResults = {
+    id: userResults[0].id,
+    userResults: Number(userResults[0].goals),
+    actualResults: Number(actualResults.find((res) => res.id === userResults[0].id).goals),
+  };
+  const teamBFullResults = {
+    id: userResults[1].id,
+    userResults: Number(userResults[1].goals),
+    actualResults: Number(actualResults.find((res) => res.id === userResults[1].id).goals),
+  };
+
+  return { teamAFullResults, teamBFullResults };
+};
+
+const createMatchScore = ({ teamA, teamB }) => {
+  if (
+    (teamA.userResults === teamB.userResults && teamA.actualResults === teamB.actualResults)
+    || (teamA.userResults > teamB.userResults && teamA.actualResults > teamB.actualResults)
+    || (teamA.userResults < teamB.userResults && teamA.actualResults < teamB.actualResults)
+  ) return ({ state: true, points: 3 });
+  return ({ state: false, points: 0 });
+};
+
+const createExactScore = ({ teamA, teamB }) => {
+  if (teamA.userResults === teamA.actualResults && teamB.userResults === teamB.actualResults) {
+    return ({ state: true, points: 1 });
+  }
+  return ({ state: false, points: 0 });
+};
+
+export const createScore = ({ userResults, actualResults }) => {
+  const areResultsValid = verifyAreResultsValid({ userResults, actualResults });
+  if (!areResultsValid) {
+    return ({
+      match: { state: false, points: 0 },
+      exact: { state: false, points: 0 },
+    });
+  }
+
+  const { teamAFullResults, teamBFullResults } = createFullResults({ userResults, actualResults });
+
+  const matchScore = createMatchScore({ teamA: teamAFullResults, teamB: teamBFullResults });
+  const exactScore = createExactScore({ teamA: teamAFullResults, teamB: teamBFullResults });
+
+  return {
+    match: matchScore,
+    exact: exactScore,
+  };
 };

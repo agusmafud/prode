@@ -1,7 +1,7 @@
-import useFirestoreCollection from 'hooks/firebase/useFirestoreCollection';
+import useRealTimeFirestoreCollection from 'hooks/firebase/useRealTimeFirestoreCollection';
 
 const useGroups = (db) => {
-  const groups = useFirestoreCollection({
+  const groups = useRealTimeFirestoreCollection({
     db,
     collectionName: 'groups',
   });

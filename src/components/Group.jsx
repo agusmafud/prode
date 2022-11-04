@@ -5,8 +5,7 @@ import {
 } from '@chakra-ui/react';
 
 import AccordionButton from 'components/AccordionButton';
-import Match from 'components/Match';
-import { getMatchTeamsData } from 'helpers';
+import MatchContainer from 'components/Match/MatchContainer';
 
 const Group = ({
   group,
@@ -17,28 +16,15 @@ const Group = ({
   <AccordionItem>
     <AccordionButton label={group.label} />
     <AccordionPanel padding={0}>
-      {matches.map((match, index) => {
-        const {
-          teams: matchTeams,
-          ...matchData
-        } = match;
-        const matchTeamsData = getMatchTeamsData({ matchTeams, teams });
-        const limitTime = 5 * 60;
-        const scoreEnabled = matchData.date.seconds > (dbProps.time + limitTime);
-        const minutesLeft = Math.trunc((match.date.seconds - dbProps.time - limitTime) / 60);
-
-        return (
-          <Match
-            key={match.date + match.teams[0]}
-            index={index}
-            match={matchData}
-            teams={matchTeamsData}
-            scoreEnabled={scoreEnabled}
-            minutesLeft={minutesLeft}
-            dbProps={dbProps}
-          />
-        );
-      })}
+      {matches.map((match, index) => (
+        <MatchContainer
+          key={match.date + match.teams[0]}
+          index={index}
+          match={match}
+          teams={teams}
+          dbProps={dbProps}
+        />
+      ))}
     </AccordionPanel>
   </AccordionItem>
 );

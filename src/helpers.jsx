@@ -34,13 +34,34 @@ export const getMatchTeamsData = ({ matchTeams, teams }) => {
   return matchTeamsData;
 };
 
-export const getGoals = ({ teamId, results }) => {
-  const teamResult = results?.find(
+export const getGoals = ({
+  teamId,
+  score,
+  defaultToZero = false,
+}) => {
+  const defaultValue = defaultToZero ? 0 : null;
+  const teamResult = score?.find(
     ((teamScore) => teamScore.id === teamId),
   );
+  const goals = teamResult?.goals !== undefined
+    ? Number(teamResult?.goals)
+    : defaultValue;
 
-  return teamResult?.goals ?? 0;
+  return goals;
 };
+
+export const createTeamData = ({ team, userMatchScore, actualMatchScore }) => ({
+  ...team,
+  goals: getGoals({
+    teamId: team.id,
+    score: userMatchScore,
+    defaultToZero: true,
+  }),
+  actualGoals: getGoals({
+    teamId: team.id,
+    score: actualMatchScore,
+  }),
+});
 
 export const renderUnixTime = (unixTime) => {
   const date = new Date(unixTime * 1000);
@@ -62,62 +83,70 @@ export const renderUnixTime = (unixTime) => {
   return renderedTime;
 };
 
-const verifyAreResultsValid = ({ userResults, actualResults }) => {
-  if (userResults?.length !== 2 || actualResults?.length !== 2) return false;
-  if (!actualResults.find((res) => res.id === userResults[0].id)) return false;
-  if (!actualResults.find((res) => res.id === userResults[1].id)) return false;
-
-  return true;
-};
-
-const createFullResults = ({ userResults, actualResults }) => {
-  // TODO: HACER QUE SI EL USUARIO NO PUSO NADA, EL DEFAULT SEA 0 - 0
-  const teamAFullResults = {
-    id: userResults[0].id,
-    userResults: Number(userResults[0].goals),
-    actualResults: Number(actualResults.find((res) => res.id === userResults[0].id).goals),
-  };
-  const teamBFullResults = {
-    id: userResults[1].id,
-    userResults: Number(userResults[1].goals),
-    actualResults: Number(actualResults.find((res) => res.id === userResults[1].id).goals),
-  };
-
-  return { teamAFullResults, teamBFullResults };
-};
-
-const createMatchScore = ({ teamA, teamB }) => {
+const createMatchPoints = ({ teamA, teamB }) => {
   if (
-    (teamA.userResults === teamB.userResults && teamA.actualResults === teamB.actualResults)
-    || (teamA.userResults > teamB.userResults && teamA.actualResults > teamB.actualResults)
-    || (teamA.userResults < teamB.userResults && teamA.actualResults < teamB.actualResults)
+    (teamA.goals === teamB.goals && teamA.actualGoals === teamB.actualGoals)
+    || (teamA.goals > teamB.goals && teamA.actualGoals > teamB.actualGoals)
+    || (teamA.goals < teamB.goals && teamA.actualGoals < teamB.actualGoals)
   ) return ({ state: true, points: 3 });
   return ({ state: false, points: 0 });
 };
 
-const createExactScore = ({ teamA, teamB }) => {
-  if (teamA.userResults === teamA.actualResults && teamB.userResults === teamB.actualResults) {
+const createExactPoints = ({ teamA, teamB }) => {
+  if (teamA.goals === teamA.actualGoals && teamB.goals === teamB.actualGoals) {
     return ({ state: true, points: 1 });
   }
   return ({ state: false, points: 0 });
 };
 
-export const createScore = ({ userResults, actualResults }) => {
-  const areResultsValid = verifyAreResultsValid({ userResults, actualResults });
-  if (!areResultsValid) {
+export const createPoints = ({ teamA, teamB }) => {
+  const actualResultsAvailable = !!(teamA?.actualGoals !== null && teamB?.actualGoals !== null);
+
+  if (!actualResultsAvailable) {
     return ({
       match: { state: false, points: 0 },
       exact: { state: false, points: 0 },
     });
   }
 
-  const { teamAFullResults, teamBFullResults } = createFullResults({ userResults, actualResults });
-
-  const matchScore = createMatchScore({ teamA: teamAFullResults, teamB: teamBFullResults });
-  const exactScore = createExactScore({ teamA: teamAFullResults, teamB: teamBFullResults });
+  const matchPoints = createMatchPoints({ teamA, teamB });
+  const exactPoints = createExactPoints({ teamA, teamB });
 
   return {
-    match: matchScore,
-    exact: exactScore,
+    match: matchPoints,
+    exact: exactPoints,
   };
+};
+
+const INCORRECT = 'INCORRECT';
+const OK = 'OK';
+const PERFECT = 'PERFECT';
+const resultsData = {
+  [INCORRECT]: {
+    color: 'red',
+    text: 'INCORRECTO',
+  },
+  [OK]: {
+    color: 'green',
+    text: 'CORRECTO',
+  },
+  [PERFECT]: {
+    color: 'orange',
+    text: 'PERFECTO',
+  },
+};
+export const getResultData = (points) => {
+  if (points?.exact?.state) return resultsData[PERFECT];
+  if (points?.match?.state) return resultsData[OK];
+  return resultsData[INCORRECT];
+};
+export const getResultColor = (points) => {
+  const resultData = getResultData(points);
+
+  return resultData.color;
+};
+export const getResultText = (points) => {
+  const resultData = getResultData(points);
+
+  return resultData.text;
 };

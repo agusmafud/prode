@@ -6,12 +6,12 @@ import {
   getRedirectResult,
 } from 'firebase/auth';
 
-import useLocalStorage from 'hooks/useLocalStorage';
+import useStorage from 'hooks/useStorage';
 
 const useGoogleAuthProvider = (firebaseApp) => {
   const [handleSignIn, setHandleSignIn] = useState();
 
-  const [persistedUser, setPersistedUser] = useLocalStorage('user', null);
+  const [persistedUser, setPersistedUser] = useStorage('user', null);
   const [user, setUser] = useState(persistedUser);
 
   useEffect(() => {

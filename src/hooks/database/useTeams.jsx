@@ -1,7 +1,7 @@
-import useFirestoreCollection from 'hooks/firebase/useFirestoreCollection';
+import useRealTimeFirestoreCollection from 'hooks/firebase/useRealTimeFirestoreCollection';
 
 const useTeams = (db) => {
-  const teams = useFirestoreCollection({
+  const teams = useRealTimeFirestoreCollection({
     db,
     collectionName: 'teams',
   });

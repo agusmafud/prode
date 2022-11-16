@@ -1,12 +1,12 @@
 import useRealTimeFirestoreCollection from 'hooks/firebase/useRealTimeFirestoreCollection';
 
 const useMatches = (db) => {
-  const matches = useRealTimeFirestoreCollection({
+  const { document: matches, loading } = useRealTimeFirestoreCollection({
     db,
     collectionName: 'matches',
   });
 
-  return matches;
+  return { matches, loading };
 };
 
 export default useMatches;

@@ -11,6 +11,7 @@ const useRealTimeFirestoreCollection = ({
   condition,
 }) => {
   const [document, setDocument] = useState();
+  const [loading, setLoading] = useState(false);
   const [unsubscribe, setUnsubscribe] = useState();
 
   useEffect(() => {
@@ -29,17 +30,19 @@ const useRealTimeFirestoreCollection = ({
         });
         setDocument(results);
         setUnsubscribe(initialUnsubscribe);
+        setLoading(false);
       });
     };
 
     if (!document && db && collectionName) {
+      setLoading(true);
       getCollection();
     }
 
     return () => { if (unsubscribe) unsubscribe(); };
   }, [document, db, collectionName, condition, unsubscribe]);
 
-  return document;
+  return { document, loading };
 };
 
 export default useRealTimeFirestoreCollection;

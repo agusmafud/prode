@@ -13,10 +13,11 @@ const MatchData = ({
   minutesLeft,
   points,
   actualScoreAvailable,
+  actualResultsEditable,
 }) => {
   const showPendingMessage = !scoreEnabled && !actualScoreAvailable;
-  const showPoints = !scoreEnabled && actualScoreAvailable;
   const showTimeLeft = scoreEnabled && minutesLeft < 60;
+  const showPoints = !scoreEnabled && actualScoreAvailable && !actualResultsEditable;
 
   const timeLeftText = minutesLeft === 0
     ? 'últimos segundos'
@@ -64,6 +65,15 @@ const MatchData = ({
           colorScheme="red"
         >
           VOTO CERRADO
+        </Badge>
+      )}
+      {actualResultsEditable && (
+        <Badge
+          variant="solid"
+          width="min-content"
+          colorScheme="red"
+        >
+          EDITANDO
         </Badge>
       )}
       {showPoints && (

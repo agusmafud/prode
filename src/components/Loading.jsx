@@ -5,12 +5,13 @@ import MessiWall from './MessiWall';
 const Loading = () => (
   <MessiWall>
     <HStack
+      width="100%"
       height="100%"
       gap={3}
     >
       <Text
         size="lg"
-        fontSize="4xl"
+        fontSize={{ base: 'xl', md: '4xl' }}
         letterSpacing={1.3}
         color="white"
         fontWeight="bold"
@@ -23,7 +24,7 @@ const Loading = () => (
         speed="0.65s"
         emptyColor="gray.200"
         color="green.500"
-        size="xl"
+        fontSize={{ base: 'md', md: 'xl' }}
       />
     </HStack>
   </MessiWall>

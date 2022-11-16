@@ -5,13 +5,15 @@ import {
 } from '@chakra-ui/react';
 
 import AccordionButton from 'components/AccordionButton';
-import MatchContainer from 'components/Match/MatchContainer';
+import MatchContainer from 'containers/MatchContainer';
 
 const Group = ({
   group,
   teams,
   matches,
   dbProps,
+  actualResultsEditable,
+  users,
 }) => (
   <AccordionItem>
     <AccordionButton label={group.label} />
@@ -23,6 +25,8 @@ const Group = ({
           match={match}
           teams={teams}
           dbProps={dbProps}
+          actualResultsEditable={actualResultsEditable}
+          users={users}
         />
       ))}
     </AccordionPanel>

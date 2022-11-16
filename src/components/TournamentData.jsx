@@ -4,10 +4,14 @@ import {
   Avatar,
   Box,
   Text,
+  Show,
 } from '@chakra-ui/react';
+
+import ScoresTableModal from 'components/ScoresTableModal';
 
 const TournamentData = ({
   user,
+  users,
 }) => (
   <Flex
     marginBottom={6}
@@ -17,20 +21,24 @@ const TournamentData = ({
     background="rgba(0,0,0,0.2)"
     borderRadius={10}
   >
+    <Show above="md">
+      <Box flexGrow="1"> </Box>
+    </Show>
     <Avatar
       src={user.photoURL}
       name={user.displayName}
-      size="lg"
+      fontSize={{ base: 'md', md: 'lg' }}
       border="1px solid #4A5568"
     />
-    <Box ml="3">
+    <Box ml="3" flexGrow="1">
       <Text
-        fontSize="xl"
+        fontSize={{ base: 'lg', md: 'xl' }}
         fontWeight="bold"
       >
         {user.displayName}
       </Text>
     </Box>
+    <ScoresTableModal users={users} />
   </Flex>
 );
 

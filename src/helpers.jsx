@@ -100,12 +100,17 @@ const createExactPoints = ({ teamA, teamB }) => {
 };
 
 export const createPoints = ({ teamA, teamB }) => {
+  // eslint-disable-next-line no-debugger
+  debugger;
   const actualResultsAvailable = !!(teamA?.actualGoals !== null && teamB?.actualGoals !== null);
 
   if (!actualResultsAvailable) {
     return ({
-      match: { state: false, points: 0 },
-      exact: { state: false, points: 0 },
+      points: {
+        match: { state: false, points: 0 },
+        exact: { state: false, points: 0 },
+      },
+      totalPoints: 0,
     });
   }
 
@@ -113,8 +118,11 @@ export const createPoints = ({ teamA, teamB }) => {
   const exactPoints = createExactPoints({ teamA, teamB });
 
   return {
-    match: matchPoints,
-    exact: exactPoints,
+    points: {
+      match: matchPoints,
+      exact: exactPoints,
+    },
+    totalPoints: matchPoints.points + exactPoints.points,
   };
 };
 

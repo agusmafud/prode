@@ -2,15 +2,19 @@ import React from 'react';
 
 import useUserMatchScore from 'hooks/database/useUserMatchScore';
 import useActualMatchScore from 'hooks/database/useActualMatchScore';
-import { getMatchTeamsData, createTeamData, createPoints } from 'helpers';
+import useUserMatchPoints from 'hooks/database/useUserMatchPoints';
 
-import Match from './Match';
+import { getMatchTeamsData, createTeamData } from 'helpers';
+
+import Match from '../components/Match/Match';
 
 const MatchContainer = ({
   index,
   match,
   teams,
   dbProps,
+  actualResultsEditable,
+  users,
 }) => {
   const {
     teams: matchTeams,
@@ -19,19 +23,29 @@ const MatchContainer = ({
   const matchTeamsData = getMatchTeamsData({ matchTeams, teams });
 
   const actualTime = dbProps.time;
-  const limitTime = 5 * 60;
+  const limitTime = 5 * 60; // can vote until 5 minutes match start
   const scoreEnabled = matchData.date.seconds > (actualTime + limitTime);
   const minutesLeft = Math.trunc((match.date.seconds - actualTime - limitTime) / 60);
 
   const { userMatchScore, setTeamUserScore } = useUserMatchScore({ ...dbProps, matchId: match.id });
-  const { actualMatchScore } = useActualMatchScore({ db: dbProps.db, matchId: match.id });
+  const { actualMatchScore, setActualMatchScore } = useActualMatchScore({
+    db: dbProps.db,
+    matchId: match.id,
+  });
+  const userMatchPoints = useUserMatchPoints(
+    { ...dbProps, matchId: match.id },
+  );
 
   const teamA = createTeamData({ team: matchTeamsData[0], userMatchScore, actualMatchScore });
   const teamB = createTeamData({ team: matchTeamsData[1], userMatchScore, actualMatchScore });
-  const points = createPoints({ teamA, teamB });
   const actualScoreAvailable = (teamA?.actualGoals !== null && teamB?.actualGoals !== null);
 
-  const handleSetResult = ({ id, newValue }) => setTeamUserScore({ teamId: id, goals: newValue });
+  const handleSetResult = ({ id, newValue }) => {
+    const setResultFunction = actualResultsEditable
+      ? setActualMatchScore
+      : setTeamUserScore;
+    setResultFunction({ teamId: id, goals: newValue });
+  };
 
   return (
     <Match
@@ -43,8 +57,11 @@ const MatchContainer = ({
       scoreEnabled={scoreEnabled}
       minutesLeft={minutesLeft}
       handleSetResult={handleSetResult}
-      points={points}
+      points={userMatchPoints}
       actualScoreAvailable={actualScoreAvailable}
+      actualResultsEditable={actualResultsEditable}
+      users={users}
+      dbProps={dbProps}
     />
   );
 };

@@ -1,9 +1,14 @@
 import React from 'react';
 import {
+  Code,
+  Button,
   GridItem,
   VStack,
   Text,
+  Box,
 } from '@chakra-ui/react';
+
+import setMatchPoints from 'hooks/database/setMatchPoints';
 
 import MatchGrid from './MatchGrid';
 import MatchData from './MatchData';
@@ -20,9 +25,20 @@ const Match = ({
   handleSetResult,
   points,
   actualScoreAvailable,
+  actualResultsEditable,
+  users,
+  dbProps,
 }) => {
-  const background = index % 2 === 0 ? 'gray.50' : 'white';
-  const showExtraData = actualScoreAvailable && !(points.exact.state);
+  const getBackground = () => {
+    if (actualResultsEditable) {
+      return index % 2 === 0 ? 'red.200' : 'red.100';
+    }
+    return index % 2 === 0 ? 'gray.50' : 'white';
+  };
+  const background = getBackground();
+  const showActualScore = (
+    !scoreEnabled && actualScoreAvailable && !points.exact.state && !actualResultsEditable);
+  const showExtraData = actualResultsEditable || showActualScore;
 
   return (
     <VStack gap="0">
@@ -43,6 +59,7 @@ const Match = ({
             minutesLeft={minutesLeft}
             points={points}
             actualScoreAvailable={actualScoreAvailable}
+            actualResultsEditable={actualResultsEditable}
           />
         </GridItem>
         <GridItem area="teamA">
@@ -63,6 +80,7 @@ const Match = ({
             scoreEnabled={scoreEnabled}
             handleSetResult={handleSetResult}
             points={points}
+            actualResultsEditable={actualResultsEditable}
           />
         </GridItem>
         <GridItem
@@ -71,10 +89,7 @@ const Match = ({
           justifyContent="center"
           alignItems="center"
         >
-          <Text
-            fontSize="4xl"
-            fontWeight="bold"
-          >
+          <Text fontSize="2xl">
             -
           </Text>
         </GridItem>
@@ -89,6 +104,7 @@ const Match = ({
             scoreEnabled={scoreEnabled}
             handleSetResult={handleSetResult}
             points={points}
+            actualResultsEditable={actualResultsEditable}
           />
         </GridItem>
         <GridItem area="teamB">
@@ -106,8 +122,38 @@ const Match = ({
         {showExtraData && (
           <GridItem
             area="extraData"
+            display="flex"
+            justifyContent="center"
           >
-            {`El resultado fue ${teamA.label}: ${teamA.actualGoals} - ${teamB.label}: ${teamB.actualGoals}`}
+            {actualResultsEditable && (
+              <Button
+                colorScheme="whatsapp"
+                size="md"
+                letterSpacing={1.3}
+                border="2px solid white"
+                marginTop={{ base: 4, md: 0 }}
+                marginBottom={{ base: 2, md: 6 }}
+                onClick={() => setMatchPoints({
+                  db: dbProps.db,
+                  users,
+                  matchId: match.id,
+                  teamA,
+                  teamB,
+                })}
+              >
+                CREAR PUNTAJES
+              </Button>
+            )}
+            {showActualScore && (
+              <Box
+                marginTop={{ base: 0, md: -5 }}
+                marginBottom={{ base: 2, md: 4 }}
+              >
+                <Code colorScheme="red">
+                  {`Resultado: ${teamA.label}: ${teamA.actualGoals} - ${teamB.label}: ${teamB.actualGoals}`}
+                </Code>
+              </Box>
+            )}
           </GridItem>
         )}
       </MatchGrid>

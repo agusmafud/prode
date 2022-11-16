@@ -1,12 +1,12 @@
 import useRealTimeFirestoreCollection from 'hooks/firebase/useRealTimeFirestoreCollection';
 
 const useGroups = (db) => {
-  const groups = useRealTimeFirestoreCollection({
+  const { document: groups, loading } = useRealTimeFirestoreCollection({
     db,
     collectionName: 'groups',
   });
 
-  return groups;
+  return { groups, loading };
 };
 
 export default useGroups;

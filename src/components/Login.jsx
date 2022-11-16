@@ -7,11 +7,11 @@ const Login = ({
 }) => (
   <MessiWall>
     <Button
-      width="200px"
-      height="100%"
+      width={{ base: '150px', md: '200px' }}
+      height="80px"
       colorScheme="whatsapp"
       size="lg"
-      fontSize="4xl"
+      fontSize={{ base: '3xl', md: '4xl' }}
       letterSpacing={1.3}
       textShadow="0 0 4px #333"
       shadow="0 0 4px white"

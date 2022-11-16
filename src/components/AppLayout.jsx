@@ -4,7 +4,6 @@ import { Flex } from '@chakra-ui/react';
 import background from 'assets/background.jpg';
 
 const AppLayout = ({
-  extraPadding = true,
   children,
 }) => (
   <Flex
@@ -23,16 +22,8 @@ const AppLayout = ({
       maxWidth="1200px"
       height="auto"
       minHeight="100vh"
-      paddingX={
-        extraPadding
-          ? { base: 4, lg: 10 }
-          : 2
-      }
-      paddingY={
-        extraPadding
-          ? { base: 4, lg: 10 }
-          : 0
-      }
+      paddingX={2}
+      paddingY={0}
       flexDirection="column"
       alignItems="center"
       justifyContent="flex-start"

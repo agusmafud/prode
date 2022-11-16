@@ -4,22 +4,28 @@ import {
   Box,
 } from '@chakra-ui/react';
 
-import Group from 'components/Group';
+import GroupContainer from 'containers/GroupContainer';
 import TournamentData from 'components/TournamentData';
-import { getGroupTeamsData, getGroupMatchesData } from 'helpers';
 
 const Tournament = ({
   user,
+  users,
   teams,
   matches,
   groups,
   dbProps,
+  actualResultsEditable,
 }) => (
   <Box
     width="100%"
     maxWidth="800"
+    paddingX={2}
+    paddingY={{ base: 4, lg: 10 }}
   >
-    <TournamentData user={user} />
+    <TournamentData
+      user={user}
+      users={users}
+    />
     <Box
       background="rgba(0,0,0,0.2)"
       borderRadius={10}
@@ -32,25 +38,17 @@ const Tournament = ({
         borderRightWidth="1px"
         borderColor="gray.200"
       >
-        {groups.map((group) => {
-          const {
-            teams: groupTeams,
-            matches: groupMatches,
-            ...groupData
-          } = group;
-          const groupTeamsData = getGroupTeamsData({ groupTeams, teams });
-          const groupMatchesData = getGroupMatchesData({ groupMatches, matches });
-
-          return (
-            <Group
-              key={group.id}
-              group={groupData}
-              teams={groupTeamsData}
-              matches={groupMatchesData}
-              dbProps={dbProps}
-            />
-          );
-        })}
+        {groups.map((group) => (
+          <GroupContainer
+            key={group.id}
+            group={group}
+            teams={teams}
+            matches={matches}
+            dbProps={dbProps}
+            actualResultsEditable={actualResultsEditable}
+            users={users}
+          />
+        ))}
       </Accordion>
     </Box>
   </Box>

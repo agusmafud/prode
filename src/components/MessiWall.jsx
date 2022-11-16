@@ -65,7 +65,7 @@ const MessiWall = ({ children }) => {
         width="100%"
         height="100%"
         objectFit="cover"
-        opacity={image.featured ? 1 : 0.8}
+        opacity={0.8}
         src={image.img}
       />
     </GridItem>
@@ -78,7 +78,10 @@ const MessiWall = ({ children }) => {
       background="green.100"
     >
       <Grid
-        gridTemplateColumns="repeat(auto-fit, minmax(250px, 1fr))"
+        gridTemplateColumns={{
+          base: 'repeat(auto-fit, minmax(125px, 1fr))',
+          md: 'repeat(auto-fit, minmax(250px, 1fr))',
+        }}
         overflowX="hidden"
         overflowY="hidden"
         maxHeight="100vh"
@@ -88,7 +91,7 @@ const MessiWall = ({ children }) => {
       </Grid>
       <Box
         width="auto"
-        height="120px"
+        height="auto"
         padding="16px"
         position="absolute"
         top="40%"

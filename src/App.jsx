@@ -3,45 +3,76 @@ import { ChakraProvider } from '@chakra-ui/react';
 
 import AppLayout from 'components/AppLayout';
 import Login from 'components/Login';
-import Tournament from 'components/Tournament';
+import TournamentContainer from 'containers/TournamentContainer';
 import useFirebaseApp from 'hooks/firebase/useFirebaseApp';
 import useFirebaseAuth from 'hooks/firebase/useFirebaseAuth';
 import useFirestore from 'hooks/firebase/useFirestore';
-import useGroups from 'hooks/database/useGroups';
-import useMatches from 'hooks/database/useMatches';
-import useTeams from 'hooks/database/useTeams';
+import useSetUser from 'hooks/database/useSetUser';
+/* import { useSetTeams, useSetMatches, useSetGroups } from 'hooks/firebase/setFirebaseDocument'; */
 
 import { firebaseConfig } from 'constants';
-import useTime from 'hooks/useTime';
 import Loading from 'components/Loading';
+
+/* const teams = [
+  { id: 'Milan', label: 'Milan' },
+  { id: 'Fiorentina', label: 'Fiorentina' },
+  { id: 'Juventus', label: 'Juventus' },
+  { id: 'Lazio', label: 'Lazio' },
+  { id: 'Monaco', label: 'Mónaco' },
+  { id: 'Olympique', label: 'Olympique de Marsella' },
+  { id: 'River', label: 'River' },
+  { id: 'Betis', label: 'Betis' },
+];
+
+const matches = [
+  {
+    id: '200',
+    date: new Date('13 November 2022 14:10:00 UTC-03:00'),
+    teams: ['Milan', 'Fiorentina'],
+  },
+  {
+    id: '201',
+    date: new Date('13 November 2022 16:45:00 UTC-03:00'),
+    teams: ['Juventus', 'Lazio'],
+  },
+  {
+    id: '202',
+    date: new Date('13 November 2022 16:45:00 UTC-03:00'),
+    teams: ['Monaco', 'Olympique'],
+  },
+  {
+    id: '203',
+    date: new Date('13 November 2022 21:00:00 UTC-03:00'),
+    teams: ['River', 'Betis'],
+  },
+];
+
+const groups = [
+  {
+    id: 'groupTest',
+    label: 'Grupo de Prueba',
+    teams: ['Milan', 'Fiorentina', 'Juventus', 'Lazio', 'Monaco', 'Olympique', 'River', 'Betis'],
+    matches: ['200', '201', '202', '203'],
+  },
+]; */
 
 const App = () => {
   const firebaseApp = useFirebaseApp(firebaseConfig);
   const { user, userLoading, handleSignIn } = useFirebaseAuth(firebaseApp);
-  const time = useTime();
-
   const db = useFirestore(firebaseApp);
-  const teams = useTeams(db);
-  const matches = useMatches(db);
-  const groups = useGroups(db);
-  console.log('groups: ', groups);
-  console.log('matches: ', matches);
-  console.log('teams: ', teams);
-
-  // TODO: Add to context for avoid multiple drilling down
-  const dbProps = {
-    db,
-    uid: user?.uid,
-    time,
-  };
+  const users = useSetUser({ db, user });
 
   const showLogin = !user && !userLoading;
   const showLoading = !user && userLoading;
-  const showTournament = user && teams && matches && groups;
+  const showTournament = !!user;
+
+  /* useSetTeams({ db, teams });
+  useSetMatches({ db, matches });
+  useSetGroups({ db, groups }); */
 
   return (
     <ChakraProvider resetCSS>
-      <AppLayout extraPadding={!showLogin}>
+      <AppLayout>
         {showLogin && (
           <Login
             handleSignIn={handleSignIn}
@@ -50,12 +81,10 @@ const App = () => {
         )}
         {showLoading && <Loading />}
         {showTournament && (
-          <Tournament
+          <TournamentContainer
             user={user}
-            teams={teams}
-            matches={matches}
-            groups={groups}
-            dbProps={dbProps}
+            users={users}
+            db={db}
           />
         )}
       </AppLayout>

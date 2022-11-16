@@ -11,15 +11,20 @@ const MatchTeamScore = ({
   scoreEnabled,
   handleSetResult,
   points,
+  actualResultsEditable,
 }) => {
   const resultColor = getResultColor(points);
+  const goals = actualResultsEditable
+    ? team?.actualGoals ?? 0
+    : team.goals;
+  const showCounter = scoreEnabled || actualResultsEditable;
 
   return (
-    scoreEnabled
+    showCounter
       ? (
         <Counter
           id={team.id}
-          value={team.goals}
+          value={goals}
           setValue={handleSetResult}
         />
 
@@ -31,7 +36,7 @@ const MatchTeamScore = ({
           textShadow="0 0 2px #333"
           color={resultColor}
         >
-          {team.goals}
+          {goals}
         </Text>
       )
   );

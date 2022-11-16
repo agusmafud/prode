@@ -2,11 +2,11 @@ import useRealTimeFirestoreCollection from 'hooks/firebase/useRealTimeFirestoreC
 import setFirebaseDocument from 'hooks/firebase/setFirebaseDocument';
 
 const useUserMatchScore = ({ db, uid, matchId }) => {
-  const response = useRealTimeFirestoreCollection({
+  const { document } = useRealTimeFirestoreCollection({
     db,
     collectionName: `results/${uid}/matches/${matchId}/score`,
   });
-  const userMatchScore = response ?? [];
+  const userMatchScore = document ?? [];
 
   const setTeamUserScore = ({ teamId, goals }) => {
     setFirebaseDocument({

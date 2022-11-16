@@ -1,28 +1,26 @@
 import useRealTimeFirestoreCollection from 'hooks/firebase/useRealTimeFirestoreCollection';
-import setFirebaseDocument from 'hooks/firebase/setFirebaseDocument';
 
 const useUserMatchPoints = ({ db, uid, matchId }) => {
-  const response = useRealTimeFirestoreCollection({
-    db,
-    collectionName: `results/${uid}/matches/${matchId}/points`,
-  });
-  const userMatchPoints = response ?? ({
-    match: { state: false, points: 0 },
-    exact: { state: false, points: 0 },
-  });
+  const createPointsObject = (doc) => {
+    if (doc?.length > 0) {
+      const match = doc.find((d) => d.id === 'match');
+      const exact = doc.find((d) => d.id === 'exact');
 
-  const setTeamUserPoints = ({ teamId, goals }) => {
-    setFirebaseDocument({
-      db,
-      item: { id: teamId, goals },
-      documentName: `results/${uid}/matches/${matchId}/points`,
+      if (match && exact) return ({ match, exact });
+    }
+    return ({
+      match: { state: false, points: 0 },
+      exact: { state: false, points: 0 },
     });
   };
 
-  return {
-    userMatchPoints,
-    setTeamUserPoints,
-  };
+  const { document } = useRealTimeFirestoreCollection({
+    db,
+    collectionName: `results/${uid}/matches/${matchId}/points`,
+  });
+  const userMatchPoints = createPointsObject(document);
+
+  return userMatchPoints;
 };
 
 export default useUserMatchPoints;

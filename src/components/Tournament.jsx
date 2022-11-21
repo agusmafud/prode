@@ -2,10 +2,15 @@ import React from 'react';
 import {
   Accordion,
   Box,
+  Center,
+  /* Tabs,
+  TabList,
+  Tab, */
 } from '@chakra-ui/react';
 
 import GroupContainer from 'containers/GroupContainer';
 import TournamentData from 'components/TournamentData';
+// import { GROUPS_VIEW, DATE_VIEW } from 'containers/TournamentContainer';
 
 const Tournament = ({
   user,
@@ -13,6 +18,8 @@ const Tournament = ({
   teams,
   matches,
   groups,
+  // currentView,
+  // setCurrentView,
   dbProps,
   actualResultsEditable,
 }) => (
@@ -26,6 +33,21 @@ const Tournament = ({
       user={user}
       users={users}
     />
+    <Center>
+      {/* <Tabs
+        index={currentView === GROUPS_VIEW ? 0 : 1}
+        onChange={(index) => setCurrentView(index === 0 ? GROUPS_VIEW : DATE_VIEW)}
+        variant="soft-rounded"
+        colorScheme="orange"
+        size={{ base: 'sm', md: 'lg' }}
+        marginBottom={{ base: 2, md: 4 }}
+      >
+        <TabList>
+          <Tab>Ver Grupos</Tab>
+          <Tab>Ver por fecha</Tab>
+        </TabList>
+      </Tabs> */}
+    </Center>
     <Box
       background="rgba(0,0,0,0.2)"
       borderRadius={10}

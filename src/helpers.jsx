@@ -1,4 +1,5 @@
 import React from 'react';
+import { SmallCloseIcon, CheckIcon, StarIcon } from '@chakra-ui/icons';
 
 export const getTeamLabel = ({
   teamCode,
@@ -63,15 +64,28 @@ export const createTeamData = ({ team, userMatchScore, actualMatchScore }) => ({
   }),
 });
 
-export const renderUnixTime = (unixTime) => {
-  const date = new Date(unixTime * 1000);
+export const getDateFromUnixTime = (unixTime) => new Date(unixTime * 1000);
+export const getDayName = (date) => {
   const dayNames = ['dom', 'lun', 'mar', 'miér', 'jue', 'vie', 'sáb'];
-  const dayName = dayNames[date.getDay()];
-  const dayNumber = date.getDate();
+
+  return dayNames[date.getDay()];
+};
+export const getDayNumber = (date) => date.getDate();
+export const getMonth = (date) => {
   const monthNames = ['ene', 'febr', 'marzo', 'abr', 'mayo', 'jun', 'jul', 'ag', 'sept', 'oct', 'nov', 'dic'];
-  const month = monthNames[date.getMonth()];
-  const hour = date.getHours();
-  const minutes = date.getMinutes();
+
+  return monthNames[date.getMonth()];
+};
+export const getHours = (date) => date.getHours();
+export const getMinutes = (date) => date.getMinutes();
+
+export const renderUnixTime = (unixTime) => {
+  const date = getDateFromUnixTime(unixTime);
+  const dayName = getDayName(date);
+  const dayNumber = getDayNumber(date);
+  const month = getMonth(date);
+  const hour = getHours(date);
+  const minutes = getMinutes(date);
   const renderedMinutes = `${minutes < 10 ? '0' : ''}${minutes}`;
   const renderedTime = (
     <span>
@@ -100,8 +114,6 @@ const createExactPoints = ({ teamA, teamB }) => {
 };
 
 export const createPoints = ({ teamA, teamB }) => {
-  // eslint-disable-next-line no-debugger
-  debugger;
   const actualResultsAvailable = !!(teamA?.actualGoals !== null && teamB?.actualGoals !== null);
 
   if (!actualResultsAvailable) {
@@ -113,9 +125,29 @@ export const createPoints = ({ teamA, teamB }) => {
       totalPoints: 0,
     });
   }
+  const teamAWithActualResults = {
+    goals: teamA.goals ?? 0,
+    actualGoals: teamA.actualGoals ?? 0,
+  };
+  const teamBWithActualResults = {
+    goals: teamB.goals ?? 0,
+    actualGoals: teamB.actualGoals ?? 0,
+  };
 
-  const matchPoints = createMatchPoints({ teamA, teamB });
-  const exactPoints = createExactPoints({ teamA, teamB });
+  // eslint-disable-next-line no-debugger
+  debugger;
+
+  const matchPoints = createMatchPoints({
+    teamA: teamAWithActualResults,
+    teamB: teamBWithActualResults,
+  });
+  const exactPoints = createExactPoints({
+    teamA: teamAWithActualResults,
+    teamB: teamBWithActualResults,
+  });
+
+  // eslint-disable-next-line no-debugger
+  debugger;
 
   return {
     points: {
@@ -133,14 +165,17 @@ const resultsData = {
   [INCORRECT]: {
     color: 'red',
     text: 'INCORRECTO',
+    Icon: SmallCloseIcon,
   },
   [OK]: {
     color: 'green',
     text: 'CORRECTO',
+    Icon: CheckIcon,
   },
   [PERFECT]: {
     color: 'orange',
     text: 'PERFECTO',
+    Icon: StarIcon,
   },
 };
 export const getResultData = (points) => {
@@ -157,4 +192,71 @@ export const getResultText = (points) => {
   const resultData = getResultData(points);
 
   return resultData.text;
+};
+
+const addOrderedToMatches = ({ matches, match }) => {
+  // eslint-disable-next-line no-debugger
+  debugger;
+  const newMatches = [...matches, match];
+  const orderedMatches = newMatches.sort((a, b) => {
+    // eslint-disable-next-line no-debugger
+    debugger;
+    if (a.date.seconds < b.date.seconds) return -1;
+    return 1;
+  });
+
+  return orderedMatches;
+};
+
+export const getDateGroups = (matches) => {
+  const dateGroups = matches.reduce((acc, match) => {
+    const date = getDateFromUnixTime(match.date);
+    const dayNumber = getDayNumber(date);
+    const month = getMonth(date);
+    const groupIndex = acc.findIndex((e) => e.id === dayNumber + month);
+    const groupAlreadyCreated = groupIndex !== -1;
+
+    if (groupAlreadyCreated) {
+      const newAcc = [...acc];
+      newAcc[groupIndex] = {
+        ...newAcc[groupIndex],
+        matches: addOrderedToMatches({
+          matches: newAcc[groupIndex].matches,
+          match: { matchId: match.id, date: match.date },
+        }),
+        teams: [...new Set([
+          ...newAcc[groupIndex].teams,
+          ...match.teams,
+        ])],
+      };
+
+      return newAcc;
+    }
+    return [
+      ...acc,
+      {
+        id: dayNumber + month,
+        dayNumber,
+        month,
+        label: `${dayNumber} - ${month}`,
+        matches: [{ matchId: match.id, date: match.date }],
+        teams: [...match.teams],
+      },
+    ];
+  }, []);
+  const orderedDateGroups = dateGroups.sort((a, b) => {
+    if (a.month === 'nov' && b.month === 'dic') return -1;
+    if (a.month === 'dic' && b.month === 'nov') return 1;
+    if (a.dayNumber < b.dayNumber) return -1;
+    return 1;
+  });
+  // eslint-disable-next-line no-debugger
+  debugger;
+  const transformedDateGroups = orderedDateGroups.map((group) => ({
+    ...group,
+    matches: group.matches.map((match) => match.matchId),
+  }));
+  // eslint-disable-next-line no-debugger
+  debugger;
+  return transformedDateGroups;
 };

@@ -44,12 +44,14 @@ const setMatchPoints = async ({
   const getUserTournamentPoints = (uid) => (
     users.find((user) => user.id === uid).points ?? 0
   );
+  const getUserTournamentMatches = (uid) => (
+    users.find((user) => user.id === uid).matches ?? []
+  );
 
   users.forEach(async (user) => {
-    // eslint-disable-next-line no-unused-vars
-    const previousPoints = await getPreviousMatchPoints(user.id);
     // eslint-disable-next-line no-debugger
     debugger;
+    const previousPoints = await getPreviousMatchPoints(user.id);
     const score = await getUserMatchResult(user.id);
     const { points, totalPoints } = createPoints({
       teamA: { ...teamA, goals: getGoals({ teamId: teamA.id, score, defaultToZero: true }) },
@@ -72,16 +74,31 @@ const setMatchPoints = async ({
       documentName: `results/${user.id}/matches/${matchId}/points`,
     });
 
-    // NO ESTÁ RESTANDO BIEN CUANDO SE CAMBIA UN RESULTADO CON PARTIDO CORRECTO
-    // eslint-disable-next-line no-unused-vars
     const tournamentPoints = getUserTournamentPoints(user.id);
-    // eslint-disable-next-line no-debugger
-    debugger;
+    const matchData = {
+      matchId,
+      label: `${teamA.label} - ${teamB.label}`,
+      points,
+    };
+    const createTournamentMatches = () => {
+      const initialTournamentMatches = getUserTournamentMatches(user.id);
+      const filteredTournamentMatches = initialTournamentMatches.filter(
+        (match) => match.matchId !== matchId,
+      );
+      const tournamentMatches = [...filteredTournamentMatches, matchData];
+      const orderedTournamentMatches = tournamentMatches.sort(
+        (a, b) => Number(a.matchId) - Number(b.matchId),
+      );
+
+      return orderedTournamentMatches;
+    };
+    const tournamentMatches = createTournamentMatches();
     setFirebaseDocument({
       db,
       item: {
         id: user.id,
         points: tournamentPoints - previousPoints + totalPoints,
+        matches: tournamentMatches,
       },
       documentName: 'users',
       merge: true,

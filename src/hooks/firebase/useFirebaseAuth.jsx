@@ -11,20 +11,18 @@ import useStorage from 'hooks/useStorage';
 const useFirebaseAuth = (firebaseApp) => {
   const [handleSignIn, setHandleSignIn] = useState();
 
-  const [persistedUser, setPersistedUser] = useStorage({ key: 'user', initialValue: null });
   const [userLoading, setUserLoading] = useStorage({
     key: 'userLoading',
     initialValue: false,
     useSession: true,
   });
-  const [user, setUser] = useState(persistedUser);
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     const getUser = async (auth) => {
       const result = await getRedirectResult(auth);
       if (result) {
         setUser(result.user);
-        setPersistedUser(result.user);
         setUserLoading(false);
       }
     };
@@ -40,7 +38,7 @@ const useFirebaseAuth = (firebaseApp) => {
       setHandleSignIn(() => initialHandleSignIn);
       if (!user) getUser(auth);
     }
-  }, [firebaseApp, handleSignIn, user, setPersistedUser, setUserLoading]);
+  }, [firebaseApp, handleSignIn, user, setUserLoading]);
 
   return { user, userLoading, handleSignIn };
 };

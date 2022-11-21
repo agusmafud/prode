@@ -14,7 +14,8 @@ const useSetUser = ({ db, user }) => {
   const userDataMissing = (
     userLoaded
     && (
-      !userLoaded?.email || !userLoaded?.photoURL || !userLoaded?.points || !userLoaded?.displayName
+      !userLoaded?.email || !userLoaded?.photoURL || !userLoaded?.points
+      || !userLoaded?.displayName || !userLoaded?.matches
     )
   );
 
@@ -25,6 +26,7 @@ const useSetUser = ({ db, user }) => {
       photoURL,
       displayName,
       points,
+      matches,
     }) => {
       setFirebaseDocument({
         db,
@@ -34,6 +36,7 @@ const useSetUser = ({ db, user }) => {
           photoURL,
           displayName,
           points: points ?? 0,
+          matches: matches ?? [],
         },
         documentName: 'users',
       });
@@ -46,6 +49,7 @@ const useSetUser = ({ db, user }) => {
       setUser({
         ...user,
         points: userLoaded?.points ?? 0,
+        matches: userLoaded?.matches ?? [],
       });
     }
   }, [db, user, userLoaded, userDataMissing, shouldSetUser]);

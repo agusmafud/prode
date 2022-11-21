@@ -17,12 +17,15 @@ import {
   ModalBody,
   ModalFooter,
   Button,
+  Tooltip,
+  HStack,
 } from '@chakra-ui/react';
+import { getResultData } from 'helpers';
 
 const ScoresTableModal = ({ users }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const transformUsers = () => {
-    const activeUsers = users.filter((user) => user?.photoURL && user?.email);
+    const activeUsers = users.filter((user) => user?.photoURL && user?.email && user?.displayName);
     const orderedUsers = activeUsers.sort((a, b) => b.points - a.points);
 
     return orderedUsers;
@@ -85,6 +88,33 @@ const ScoresTableModal = ({ users }) => {
                           </Flex>
                         </Td>
                         <Td isNumeric fontWeight="bold">{user.points}</Td>
+                        <Td>
+                          <HStack spacing="0">
+                            {user?.matches?.map((match) => {
+                              const resultData = getResultData(match.points);
+                              const { Icon, color } = resultData;
+
+                              return (
+                                <Tooltip
+                                  key={match.matchId}
+                                  label={match.label}
+                                >
+                                  <Flex
+                                    width="20px"
+                                    height="20px"
+                                    borderWidth="1px"
+                                    borderRadius="sm"
+                                    justifyContent="center"
+                                    alignItems="center"
+                                    background={color}
+                                  >
+                                    <Icon color="white" />
+                                  </Flex>
+                                </Tooltip>
+                              );
+                            })}
+                          </HStack>
+                        </Td>
                       </Tr>
                     );
                   })}

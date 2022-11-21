@@ -32,6 +32,7 @@ const Tournament = ({
     <TournamentData
       user={user}
       users={users}
+      matches={matches}
     />
     <Center>
       {/* <Tabs

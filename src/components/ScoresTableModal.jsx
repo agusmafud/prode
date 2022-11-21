@@ -22,7 +22,10 @@ import {
 } from '@chakra-ui/react';
 import { getResultData } from 'helpers';
 
-const ScoresTableModal = ({ users }) => {
+const ScoresTableModal = ({
+  users,
+  matches,
+}) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const transformUsers = () => {
     const activeUsers = users.filter((user) => user?.photoURL && user?.email && user?.displayName);
@@ -61,6 +64,12 @@ const ScoresTableModal = ({ users }) => {
                   {orderedUsers.map((user, index) => {
                     const position = index + 1;
                     const name = user?.displayName || user.email;
+                    const getMatchDate = (matchId) => (
+                      matches.find((el) => el.id === matchId).date.seconds);
+                    const sortedMatches = user?.matches?.length > 0
+                      ? user.matches.sort(
+                        (a, b) => (getMatchDate(a.matchId) < getMatchDate(b.matchId) ? -1 : 1),
+                      ) : [];
 
                     return (
                       <Tr key={user.id}>
@@ -90,7 +99,7 @@ const ScoresTableModal = ({ users }) => {
                         <Td isNumeric fontWeight="bold">{user.points}</Td>
                         <Td>
                           <HStack spacing="0">
-                            {user?.matches?.map((match) => {
+                            {sortedMatches.map((match) => {
                               const resultData = getResultData(match.points);
                               const { Icon, color } = resultData;
 

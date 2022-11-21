@@ -12,6 +12,7 @@ import ScoresTableModal from 'components/ScoresTableModal';
 const TournamentData = ({
   user,
   users,
+  matches,
 }) => (
   <Flex
     marginBottom={6}
@@ -38,7 +39,10 @@ const TournamentData = ({
         {user.displayName}
       </Text>
     </Box>
-    <ScoresTableModal users={users} />
+    <ScoresTableModal
+      users={users}
+      matches={matches}
+    />
   </Flex>
 );
 

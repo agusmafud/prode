@@ -28,7 +28,7 @@ const TournamentContainer = ({
     uid: user?.uid,
     time,
   };
-  const actualResultsEditable = false;
+  const actualResultsEditable = true;
 
   const isLoading = groupsLoading || matchesLoading || teamsLoading;
   const showTournament = !isLoading && groups && matches && teams;

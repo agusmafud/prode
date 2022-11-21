@@ -6,16 +6,17 @@ import {
   getRedirectResult,
 } from 'firebase/auth';
 
-import useStorage from 'hooks/useStorage';
+// import useStorage from 'hooks/useStorage';
 
 const useFirebaseAuth = (firebaseApp) => {
   const [handleSignIn, setHandleSignIn] = useState();
 
-  const [userLoading, setUserLoading] = useStorage({
+  /* const [userLoading, setUserLoading] = useStorage({
     key: 'userLoading',
     initialValue: false,
     useSession: true,
-  });
+  }); */
+  const [userLoading, setUserLoading] = useState(false);
   const [user, setUser] = useState(null);
 
   useEffect(() => {

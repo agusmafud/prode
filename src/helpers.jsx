@@ -114,17 +114,6 @@ const createExactPoints = ({ teamA, teamB }) => {
 };
 
 export const createPoints = ({ teamA, teamB }) => {
-  const actualResultsAvailable = !!(teamA?.actualGoals !== null && teamB?.actualGoals !== null);
-
-  if (!actualResultsAvailable) {
-    return ({
-      points: {
-        match: { state: false, points: 0 },
-        exact: { state: false, points: 0 },
-      },
-      totalPoints: 0,
-    });
-  }
   const teamAWithActualResults = {
     goals: teamA.goals ?? 0,
     actualGoals: teamA.actualGoals ?? 0,
@@ -195,12 +184,8 @@ export const getResultText = (points) => {
 };
 
 const addOrderedToMatches = ({ matches, match }) => {
-  // eslint-disable-next-line no-debugger
-  debugger;
   const newMatches = [...matches, match];
   const orderedMatches = newMatches.sort((a, b) => {
-    // eslint-disable-next-line no-debugger
-    debugger;
     if (a.date.seconds < b.date.seconds) return -1;
     return 1;
   });
@@ -250,13 +235,10 @@ export const getDateGroups = (matches) => {
     if (a.dayNumber < b.dayNumber) return -1;
     return 1;
   });
-  // eslint-disable-next-line no-debugger
-  debugger;
   const transformedDateGroups = orderedDateGroups.map((group) => ({
     ...group,
     matches: group.matches.map((match) => match.matchId),
   }));
-  // eslint-disable-next-line no-debugger
-  debugger;
+
   return transformedDateGroups;
 };

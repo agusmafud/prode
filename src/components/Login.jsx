@@ -1,7 +1,7 @@
 import React from 'react';
 import {
   Button,
-  // Checkbox,
+  Checkbox,
   Flex,
   Text,
 } from '@chakra-ui/react';
@@ -10,8 +10,8 @@ import MessiWall from './MessiWall';
 const Login = ({
   handleSignIn,
   version,
-  // persistUser,
-  // setPersistUser,
+  saveLogin,
+  setSaveLogin,
 }) => (
   <MessiWall>
     <Flex direction="column">
@@ -29,14 +29,14 @@ const Login = ({
       >
         JUGAR
       </Button>
-      {/* <Checkbox
+      <Checkbox
         color="whiteAlpha.800"
         marginTop={2}
-        isChecked={persistUser}
-        onChange={(e) => setPersistUser(e.target.checked)}
+        isChecked={saveLogin}
+        onChange={(e) => setSaveLogin(e.target.checked)}
       >
         Guardar usuario
-      </Checkbox> */}
+      </Checkbox>
       <Text
         fontSize="sm"
         color="whiteAlpha.800"

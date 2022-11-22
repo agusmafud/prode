@@ -16,7 +16,13 @@ const App = () => {
   // const [persistUser, setPersistUser] = useState(false);
 
   const firebaseApp = useFirebaseApp(firebaseConfig);
-  const { user, userLoading, handleSignIn } = useFirebaseAuth(firebaseApp);
+  const {
+    user,
+    userLoading,
+    handleSignIn,
+    saveLogin,
+    setSaveLogin,
+  } = useFirebaseAuth(firebaseApp);
   const db = useFirestore(firebaseApp);
   const users = useSetUser({ db, user });
 
@@ -24,7 +30,7 @@ const App = () => {
   const showLoading = !user && userLoading;
   const showTournament = !!user;
 
-  const version = '1.01';
+  const version = '1.02';
   const actualResultsEditable = false;
 
   return (
@@ -34,8 +40,8 @@ const App = () => {
           <Login
             handleSignIn={handleSignIn}
             version={version}
-            // persistUser={persistUser}
-            // setPersistUser={setPersistUser}
+            saveLogin={saveLogin}
+            setSaveLogin={setSaveLogin}
           />
         )}
         {showLoading && <Loading />}

@@ -6,9 +6,12 @@ import {
   VStack,
   Text,
   Box,
+  Flex,
 } from '@chakra-ui/react';
 
 import setMatchPoints from 'hooks/database/setMatchPoints';
+import setUsersMatchScore from 'hooks/database/setUsersMatchScore';
+// import { transformUsers } from 'helpers';
 
 import MatchGrid from './MatchGrid';
 import MatchData from './MatchData';
@@ -38,7 +41,9 @@ const Match = ({
   const background = getBackground();
   const showActualScore = (
     !scoreEnabled && actualScoreAvailable && !points.exact.state && !actualResultsEditable);
-  const showExtraData = actualResultsEditable || showActualScore;
+  const showExtraData = actualResultsEditable || showActualScore || !scoreEnabled;
+
+  // const orderedUsers = transformUsers(users);
 
   return (
     <VStack gap="0">
@@ -125,35 +130,67 @@ const Match = ({
             display="flex"
             justifyContent="center"
           >
-            {actualResultsEditable && (
-              <Button
-                colorScheme="whatsapp"
-                size="md"
-                letterSpacing={1.3}
-                border="2px solid white"
-                marginTop={{ base: 4, md: 0 }}
-                marginBottom={{ base: 2, md: 6 }}
-                onClick={() => setMatchPoints({
-                  db: dbProps.db,
-                  users,
-                  matchId: match.id,
-                  teamA,
-                  teamB,
-                })}
-              >
-                CREAR PUNTAJES
-              </Button>
-            )}
-            {showActualScore && (
-              <Box
-                marginTop={{ base: 0, md: -5 }}
-                marginBottom={{ base: 2, md: 4 }}
-              >
-                <Code colorScheme="red">
-                  {`Resultado: ${teamA.label}: ${teamA.actualGoals} - ${teamB.label}: ${teamB.actualGoals}`}
-                </Code>
-              </Box>
-            )}
+            <Flex direction="column" alignItems="center">
+              {actualResultsEditable && (
+                <>
+                  <Button
+                    colorScheme="red"
+                    size="xs"
+                    letterSpacing={1.3}
+                    border="2px solid white"
+                    marginTop={{ base: 4, md: 0 }}
+                    marginBottom={{ base: 2, md: 6 }}
+                    onClick={() => setUsersMatchScore({
+                      db: dbProps.db,
+                      users,
+                      matchId: match.id,
+                      teamA,
+                      teamB,
+                    })}
+                  >
+                    GOLES
+                  </Button>
+                  <Button
+                    colorScheme="whatsapp"
+                    size="md"
+                    letterSpacing={1.3}
+                    border="2px solid white"
+                    marginTop={{ base: 4, md: 0 }}
+                    marginBottom={{ base: 2, md: 6 }}
+                    onClick={() => setMatchPoints({
+                      db: dbProps.db,
+                      users,
+                      matchId: match.id,
+                      teamA,
+                      teamB,
+                    })}
+                  >
+                    CREAR PUNTAJES
+                  </Button>
+                </>
+              )}
+              {showActualScore && (
+                <Box
+                  marginTop={{ base: 0, md: -5 }}
+                  marginBottom={{ base: 2, md: 4 }}
+                >
+                  <Code colorScheme="red">
+                    {`Resultado: ${teamA.label}: ${teamA.actualGoals} - ${teamB.label}: ${teamB.actualGoals}`}
+                  </Code>
+                </Box>
+              )}
+              {!scoreEnabled && false && (
+                <Button
+                  onClick={() => {}}
+                  variant="outline"
+                  size="xs"
+                  marginBottom={{ base: 2, md: 4 }}
+                  colorScheme="orange"
+                >
+                  Ver qué votó la gilada
+                </Button>
+              )}
+            </Flex>
           </GridItem>
         )}
       </MatchGrid>

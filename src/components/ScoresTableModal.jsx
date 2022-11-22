@@ -20,20 +20,14 @@ import {
   Tooltip,
   HStack,
 } from '@chakra-ui/react';
-import { getResultData } from 'helpers';
+import { getResultData, transformUsers } from 'helpers';
 
 const ScoresTableModal = ({
   users,
   matches,
 }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const transformUsers = () => {
-    const activeUsers = users.filter((user) => user?.photoURL && user?.email && user?.displayName);
-    const orderedUsers = activeUsers.sort((a, b) => b.points - a.points);
-
-    return orderedUsers;
-  };
-  const orderedUsers = transformUsers();
+  const orderedUsers = transformUsers(users);
 
   return (
     <>

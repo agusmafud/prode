@@ -15,6 +15,7 @@ export const DATE_VIEW = 'DATE_VIEW';
 const TournamentContainer = ({
   user,
   users,
+  actualResultsEditable,
   db,
 }) => {
   const time = useTime();
@@ -28,7 +29,6 @@ const TournamentContainer = ({
     uid: user?.uid,
     time,
   };
-  const actualResultsEditable = true;
 
   const isLoading = groupsLoading || matchesLoading || teamsLoading;
   const showTournament = !isLoading && groups && matches && teams;

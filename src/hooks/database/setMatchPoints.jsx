@@ -55,8 +55,6 @@ const setMatchPoints = async ({
       teamA: { ...teamA, goals: getGoals({ teamId: teamA.id, score, defaultToZero: true }) },
       teamB: { ...teamB, goals: getGoals({ teamId: teamB.id, score, defaultToZero: true }) },
     });
-    // eslint-disable-next-line no-debugger
-    debugger;
     setFirebaseDocument({
       db,
       item: {
@@ -65,8 +63,6 @@ const setMatchPoints = async ({
       },
       documentName: `results/${user.id}/matches/${matchId}/points`,
     });
-    // eslint-disable-next-line no-debugger
-    debugger;
     setFirebaseDocument({
       db,
       item: {
@@ -95,8 +91,6 @@ const setMatchPoints = async ({
       return orderedTournamentMatches;
     };
     const tournamentMatches = createTournamentMatches();
-    // eslint-disable-next-line no-debugger
-    debugger;
     setFirebaseDocument({
       db,
       item: {

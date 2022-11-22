@@ -123,9 +123,6 @@ export const createPoints = ({ teamA, teamB }) => {
     actualGoals: teamB.actualGoals ?? 0,
   };
 
-  // eslint-disable-next-line no-debugger
-  debugger;
-
   const matchPoints = createMatchPoints({
     teamA: teamAWithActualResults,
     teamB: teamBWithActualResults,
@@ -134,9 +131,6 @@ export const createPoints = ({ teamA, teamB }) => {
     teamA: teamAWithActualResults,
     teamB: teamBWithActualResults,
   });
-
-  // eslint-disable-next-line no-debugger
-  debugger;
 
   return {
     points: {
@@ -241,4 +235,11 @@ export const getDateGroups = (matches) => {
   }));
 
   return transformedDateGroups;
+};
+
+export const transformUsers = (users) => {
+  const activeUsers = users.filter((user) => user?.photoURL && user?.email && user?.displayName);
+  const orderedUsers = activeUsers.sort((a, b) => b.points - a.points);
+
+  return orderedUsers;
 };

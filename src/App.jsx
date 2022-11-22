@@ -13,6 +13,8 @@ import { firebaseConfig } from 'constants';
 import Loading from 'components/Loading';
 
 const App = () => {
+  // const [persistUser, setPersistUser] = useState(false);
+
   const firebaseApp = useFirebaseApp(firebaseConfig);
   const { user, userLoading, handleSignIn } = useFirebaseAuth(firebaseApp);
   const db = useFirestore(firebaseApp);
@@ -22,13 +24,18 @@ const App = () => {
   const showLoading = !user && userLoading;
   const showTournament = !!user;
 
+  const version = '1.01';
+  const actualResultsEditable = false;
+
   return (
     <ChakraProvider resetCSS>
       <AppLayout>
         {showLogin && (
           <Login
             handleSignIn={handleSignIn}
-            userLoading={userLoading}
+            version={version}
+            // persistUser={persistUser}
+            // setPersistUser={setPersistUser}
           />
         )}
         {showLoading && <Loading />}
@@ -36,6 +43,7 @@ const App = () => {
           <TournamentContainer
             user={user}
             users={users}
+            actualResultsEditable={actualResultsEditable}
             db={db}
           />
         )}

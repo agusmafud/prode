@@ -9,6 +9,7 @@ const GroupContainer = ({
   matches,
   dbProps,
   actualResultsEditable,
+  user,
   users,
 }) => {
   const {
@@ -27,6 +28,7 @@ const GroupContainer = ({
       matches={groupMatchesData}
       dbProps={dbProps}
       actualResultsEditable={actualResultsEditable}
+      user={user}
       users={users}
     />
   );

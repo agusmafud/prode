@@ -73,17 +73,22 @@ const setMatchPoints = async ({
     });
 
     const tournamentPoints = getUserTournamentPoints(user.id);
-    const matchData = {
-      matchId,
-      label: `${teamA.label} - ${teamB.label}`,
-      points,
-    };
     const createTournamentMatches = () => {
       const initialTournamentMatches = getUserTournamentMatches(user.id);
       const filteredTournamentMatches = initialTournamentMatches.filter(
         (match) => match.matchId !== matchId,
       );
-      const tournamentMatches = [...filteredTournamentMatches, matchData];
+      const correspondingMatch = initialTournamentMatches.find(
+        (match) => match.matchId === matchId,
+      );
+      const newMatchData = correspondingMatch
+        ? { ...correspondingMatch, points }
+        : {
+          matchId,
+          label: `${teamA.label} - ${teamB.label}`,
+          points,
+        };
+      const tournamentMatches = [...filteredTournamentMatches, newMatchData];
       const orderedTournamentMatches = tournamentMatches.sort(
         (a, b) => Number(a.matchId) - Number(b.matchId),
       );

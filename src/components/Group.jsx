@@ -13,6 +13,7 @@ const Group = ({
   matches,
   dbProps,
   actualResultsEditable,
+  user,
   users,
 }) => (
   <AccordionItem>
@@ -26,6 +27,7 @@ const Group = ({
           teams={teams}
           dbProps={dbProps}
           actualResultsEditable={actualResultsEditable}
+          user={user}
           users={users}
         />
       ))}

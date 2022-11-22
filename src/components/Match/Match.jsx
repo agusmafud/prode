@@ -11,6 +11,7 @@ import {
 
 import setMatchPoints from 'hooks/database/setMatchPoints';
 import setUsersMatchScore from 'hooks/database/setUsersMatchScore';
+import UsersMatchScore from 'components/UsersMatchScore';
 // import { transformUsers } from 'helpers';
 
 import MatchGrid from './MatchGrid';
@@ -29,6 +30,7 @@ const Match = ({
   points,
   actualScoreAvailable,
   actualResultsEditable,
+  user,
   users,
   dbProps,
 }) => {
@@ -179,16 +181,12 @@ const Match = ({
                   </Code>
                 </Box>
               )}
-              {!scoreEnabled && false && (
-                <Button
-                  onClick={() => {}}
-                  variant="outline"
-                  size="xs"
-                  marginBottom={{ base: 2, md: 4 }}
-                  colorScheme="orange"
-                >
-                  Ver qué votó la gilada
-                </Button>
+              {!scoreEnabled && !actualResultsEditable && (
+                <UsersMatchScore
+                  matchId={match.id}
+                  users={users}
+                  user={user}
+                />
               )}
             </Flex>
           </GridItem>

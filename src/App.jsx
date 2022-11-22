@@ -13,8 +13,6 @@ import { firebaseConfig } from 'constants';
 import Loading from 'components/Loading';
 
 const App = () => {
-  // const [persistUser, setPersistUser] = useState(false);
-
   const firebaseApp = useFirebaseApp(firebaseConfig);
   const {
     user,
@@ -30,7 +28,7 @@ const App = () => {
   const showLoading = !user && userLoading;
   const showTournament = !!user;
 
-  const version = '1.02';
+  const version = '1.03';
   const actualResultsEditable = false;
 
   return (

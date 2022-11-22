@@ -14,6 +14,7 @@ const MatchContainer = ({
   teams,
   dbProps,
   actualResultsEditable,
+  user,
   users,
 }) => {
   const {
@@ -60,6 +61,7 @@ const MatchContainer = ({
       points={userMatchPoints}
       actualScoreAvailable={actualScoreAvailable}
       actualResultsEditable={actualResultsEditable}
+      user={user}
       users={users}
       dbProps={dbProps}
     />

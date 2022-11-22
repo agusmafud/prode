@@ -94,8 +94,7 @@ const ScoresTableModal = ({
                         <Td>
                           <HStack spacing="0">
                             {sortedMatches.map((match) => {
-                              const resultData = getResultData(match.points);
-                              const { Icon, color } = resultData;
+                              const { Icon, color } = getResultData(match.points);
 
                               return (
                                 <Tooltip

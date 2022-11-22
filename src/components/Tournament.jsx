@@ -69,6 +69,7 @@ const Tournament = ({
             matches={matches}
             dbProps={dbProps}
             actualResultsEditable={actualResultsEditable}
+            user={user}
             users={users}
           />
         ))}

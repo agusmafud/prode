@@ -28,8 +28,6 @@ const setUsersMatchScore = async ({
   );
 
   users.forEach(async (user) => {
-    // eslint-disable-next-line no-debugger
-    debugger;
     const loadedScore = await getUserMatchResult(user.id);
     const score = {
       [teamA.label]: getGoals({ teamId: teamA.id, score: loadedScore, defaultToZero: true }),

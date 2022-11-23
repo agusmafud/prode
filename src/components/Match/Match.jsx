@@ -12,7 +12,6 @@ import {
 import setMatchPoints from 'hooks/database/setMatchPoints';
 import setUsersMatchScore from 'hooks/database/setUsersMatchScore';
 import UsersMatchScore from 'components/UsersMatchScore';
-// import { transformUsers } from 'helpers';
 
 import MatchGrid from './MatchGrid';
 import MatchData from './MatchData';
@@ -45,7 +44,23 @@ const Match = ({
     !scoreEnabled && actualScoreAvailable && !points.exact.state && !actualResultsEditable);
   const showExtraData = actualResultsEditable || showActualScore || !scoreEnabled;
 
-  // const orderedUsers = transformUsers(users);
+  const handleSetUserMatchScore = () => setUsersMatchScore({
+    db: dbProps.db,
+    users,
+    matchId: match.id,
+    teamA,
+    teamB,
+  });
+  const handleSetMatchPoints = () => {
+    setMatchPoints({
+      db: dbProps.db,
+      users,
+      matchId: match.id,
+      teamA,
+      teamB,
+    });
+    handleSetUserMatchScore();
+  };
 
   return (
     <VStack gap="0">
@@ -142,13 +157,7 @@ const Match = ({
                     border="2px solid white"
                     marginTop={{ base: 4, md: 0 }}
                     marginBottom={{ base: 2, md: 6 }}
-                    onClick={() => setUsersMatchScore({
-                      db: dbProps.db,
-                      users,
-                      matchId: match.id,
-                      teamA,
-                      teamB,
-                    })}
+                    onClick={handleSetUserMatchScore}
                   >
                     GOLES
                   </Button>
@@ -159,13 +168,7 @@ const Match = ({
                     border="2px solid white"
                     marginTop={{ base: 4, md: 0 }}
                     marginBottom={{ base: 2, md: 6 }}
-                    onClick={() => setMatchPoints({
-                      db: dbProps.db,
-                      users,
-                      matchId: match.id,
-                      teamA,
-                      teamB,
-                    })}
+                    onClick={handleSetMatchPoints}
                   >
                     CREAR PUNTAJES
                   </Button>

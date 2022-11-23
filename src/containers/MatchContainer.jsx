@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import useUserMatchScore from 'hooks/database/useUserMatchScore';
 import useActualMatchScore from 'hooks/database/useActualMatchScore';
@@ -21,13 +21,17 @@ const MatchContainer = ({
     teams: matchTeams,
     ...matchData
   } = match;
-  const matchTeamsData = getMatchTeamsData({ matchTeams, teams });
-
   const actualTime = dbProps.time;
   const limitTime = 5 * 60; // can vote until 5 minutes match start
-  const scoreEnabled = matchData.date.seconds > (actualTime + limitTime);
   const minutesLeft = Math.trunc((match.date.seconds - actualTime - limitTime) / 60);
+  const [scoreEnabled, setScoreEnabled] = useState(
+    matchData.date.seconds > (actualTime + limitTime),
+  );
+  useEffect(() => {
+    setScoreEnabled(matchData.date.seconds > (actualTime + limitTime));
+  }, [actualTime, limitTime, matchData.date.seconds]);
 
+  const matchTeamsData = getMatchTeamsData({ matchTeams, teams });
   const { userMatchScore, setTeamUserScore } = useUserMatchScore({ ...dbProps, matchId: match.id });
   const { actualMatchScore, setActualMatchScore } = useActualMatchScore({
     db: dbProps.db,

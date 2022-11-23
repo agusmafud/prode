@@ -44,7 +44,10 @@ const ScoresTableModal = ({
         size={{ base: 'full', md: 'xl' }}
       >
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent
+          maxWidth="1000px !important"
+          width="100% !important"
+        >
           <ModalHeader>Tabla de posiciones</ModalHeader>
           <ModalCloseButton />
           <ModalBody>

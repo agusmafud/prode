@@ -28,7 +28,7 @@ const App = () => {
   const showLoading = !user && userLoading;
   const showTournament = !!user;
 
-  const version = '1.03';
+  const version = '1.04';
   const actualResultsEditable = false;
 
   return (

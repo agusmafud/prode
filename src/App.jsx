@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { ChakraProvider } from '@chakra-ui/react';
 
 import AppLayout from 'components/AppLayout';
@@ -28,8 +28,11 @@ const App = () => {
   const showLoading = !user && userLoading;
   const showTournament = !!user;
 
-  const version = '1.04';
-  const actualResultsEditable = false;
+  const version = '1.05';
+  const [actualResultsEditable, setActualResultsEditable] = useState(false);
+  const toggleActualResultsEditable = () => (
+    user.uid === '448AqmKAQITCjgAJ03l1RGPYrX42' && setActualResultsEditable((prevState) => !prevState)
+  );
 
   return (
     <ChakraProvider resetCSS>
@@ -42,13 +45,15 @@ const App = () => {
             setSaveLogin={setSaveLogin}
           />
         )}
-        {showLoading && <Loading />}
+        {showLoading && <Loading version={version} />}
         {showTournament && (
           <TournamentContainer
             user={user}
             users={users}
             actualResultsEditable={actualResultsEditable}
+            toggleActualResultsEditable={toggleActualResultsEditable}
             db={db}
+            version={version}
           />
         )}
       </AppLayout>

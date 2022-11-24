@@ -11,6 +11,7 @@ const GroupContainer = ({
   actualResultsEditable,
   user,
   users,
+  time,
 }) => {
   const {
     teams: groupTeams,
@@ -30,6 +31,7 @@ const GroupContainer = ({
       actualResultsEditable={actualResultsEditable}
       user={user}
       users={users}
+      time={time}
     />
   );
 };

@@ -54,68 +54,70 @@ const UsersMatchScore = ({
         ¿Qué votó la gilada?
       </Button>
       <Collapse in={isOpen} animateOpacity>
+        <Box>
+          <TableContainer>
+            <Table
+              variant="striped"
+              colorScheme="gray"
+              size="sm"
+              marginBottom={4}
+            >
+              <Tbody>
+                {matchResults.map((result) => {
+                  const name = result.user?.displayName || result.user.email;
+                  const resultData = result?.points && getResultData(result.points);
+                  const color = resultData?.color ?? 'black';
+                  const Icon = resultData?.Icon ?? null;
 
-        <TableContainer>
-          <Table
-            variant="striped"
-            colorScheme="gray"
-            size="sm"
-            marginBottom={4}
-          >
-            <Tbody>
-              {matchResults.map((result) => {
-                const name = result.user?.displayName || result.user.email;
-                const resultData = result?.points && getResultData(result.points);
-                const color = resultData?.color ?? 'black';
-                const Icon = resultData?.Icon ?? null;
-
-                return (
-                  <Tr key={result.user.id}>
-                    <Td>
-                      <Flex alignItems="center">
-                        <Box flexGrow={1}>
-                          <Avatar
-                            src={result.user.photoURL}
-                            name={name}
-                            size="sm"
-                          >
-                            {Icon && (
-                              <AvatarBadge bg={color}>
-                                <Icon color="white" />
-                              </AvatarBadge>
-                            )}
-                          </Avatar>
-                        </Box>
-                        <VStack>
-                          <Text
-                            fontSize="sm"
-                            marginLeft={{ base: 2, md: 4 }}
-                          >
-                            {name}
-                          </Text>
-                          <Text
-                            fontSize="sm"
-                          >
-                            {teams.map((team) => (
-                              <Text
-                                fontSize="sm"
-                                fontWeight="bold"
-                                display="inline"
-                                color={color}
-                              >
-                                {`${team}: ${result.score[team]} `}
-                              </Text>
-                            ))}
-                          </Text>
-                        </VStack>
-                      </Flex>
-                    </Td>
-                  </Tr>
-                );
-              })}
-            </Tbody>
-          </Table>
-        </TableContainer>
+                  return (
+                    <Tr key={result.user.id}>
+                      <Td>
+                        <Flex alignItems="center">
+                          <Box flexGrow={1}>
+                            <Avatar
+                              src={result.user.photoURL}
+                              name={name}
+                              size="sm"
+                            >
+                              {Icon && (
+                                <AvatarBadge bg={color}>
+                                  <Icon color="white" />
+                                </AvatarBadge>
+                              )}
+                            </Avatar>
+                          </Box>
+                          <VStack>
+                            <Text
+                              fontSize="sm"
+                              marginLeft={{ base: 2, md: 4 }}
+                            >
+                              {name}
+                            </Text>
+                            <Text
+                              fontSize="sm"
+                            >
+                              {teams.map((team) => (
+                                <Text
+                                  key={team}
+                                  fontSize="sm"
+                                  fontWeight="bold"
+                                  display="inline"
+                                  color={color}
+                                >
+                                  {`${team}: ${result.score[team]} `}
+                                </Text>
+                              ))}
+                            </Text>
+                          </VStack>
+                        </Flex>
+                      </Td>
+                    </Tr>
+                  );
+                })}
+              </Tbody>
+            </Table>
+          </TableContainer>
+        </Box>
       </Collapse>
     </>
   );

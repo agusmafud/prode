@@ -16,7 +16,9 @@ const TournamentContainer = ({
   user,
   users,
   actualResultsEditable,
+  toggleActualResultsEditable,
   db,
+  version,
 }) => {
   const time = useTime();
   const { teams, loading: teamsLoading } = useTeams(db);
@@ -41,7 +43,7 @@ const TournamentContainer = ({
 
   return (
     <>
-      {isLoading && <Loading />}
+      {isLoading && <Loading version={version} />}
       {showTournament && (
         <Tournament
           user={user}
@@ -53,6 +55,8 @@ const TournamentContainer = ({
           setCurrentView={setCurrentView}
           dbProps={dbProps}
           actualResultsEditable={actualResultsEditable}
+          toggleActualResultsEditable={toggleActualResultsEditable}
+          time={time}
         />
       )}
     </>

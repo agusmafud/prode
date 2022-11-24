@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useToast } from '@chakra-ui/react';
 
 import useUserMatchScore from 'hooks/database/useUserMatchScore';
 import useActualMatchScore from 'hooks/database/useActualMatchScore';
 import useUserMatchPoints from 'hooks/database/useUserMatchPoints';
-
 import { getMatchTeamsData, createTeamData } from 'helpers';
 
 import Match from '../components/Match/Match';
@@ -16,20 +16,19 @@ const MatchContainer = ({
   actualResultsEditable,
   user,
   users,
+  time,
 }) => {
+  const warningToast = useToast();
   const {
     teams: matchTeams,
     ...matchData
   } = match;
-  const actualTime = dbProps.time;
   const limitTime = 5 * 60; // can vote until 5 minutes match start
-  const minutesLeft = Math.trunc((match.date.seconds - actualTime - limitTime) / 60);
-  const [scoreEnabled, setScoreEnabled] = useState(
-    matchData.date.seconds > (actualTime + limitTime),
-  );
+  const minutesLeft = Math.trunc((match.date.seconds - time - limitTime) / 60);
+  const [scoreEnabled, setScoreEnabled] = useState((matchData.date.seconds - limitTime) > time);
   useEffect(() => {
-    setScoreEnabled(matchData.date.seconds > (actualTime + limitTime));
-  }, [actualTime, limitTime, matchData.date.seconds]);
+    setScoreEnabled((matchData.date.seconds - limitTime) > time);
+  }, [time, limitTime, matchData.date.seconds]);
 
   const matchTeamsData = getMatchTeamsData({ matchTeams, teams });
   const { userMatchScore, setTeamUserScore } = useUserMatchScore({ ...dbProps, matchId: match.id });
@@ -46,6 +45,18 @@ const MatchContainer = ({
   const actualScoreAvailable = (teamA?.actualGoals !== null && teamB?.actualGoals !== null);
 
   const handleSetResult = ({ id, newValue }) => {
+    const userUnixTime = Math.floor(Date.now() / 1000);
+    const shouldBlockScore = (matchData.date.seconds - limitTime + (2 * 60)) < userUnixTime;
+    if (!actualResultsEditable && shouldBlockScore) {
+      setScoreEnabled(false);
+      warningToast({
+        title: 'Mecanismo antiPedri activado',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+      return;
+    }
     const setResultFunction = actualResultsEditable
       ? setActualMatchScore
       : setTeamUserScore;

@@ -15,6 +15,7 @@ const Group = ({
   actualResultsEditable,
   user,
   users,
+  time,
 }) => (
   <AccordionItem>
     <AccordionButton label={group.label} />
@@ -29,6 +30,7 @@ const Group = ({
           actualResultsEditable={actualResultsEditable}
           user={user}
           users={users}
+          time={time}
         />
       ))}
     </AccordionPanel>

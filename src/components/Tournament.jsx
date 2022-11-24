@@ -22,6 +22,8 @@ const Tournament = ({
   // setCurrentView,
   dbProps,
   actualResultsEditable,
+  toggleActualResultsEditable,
+  time,
 }) => (
   <Box
     width="100%"
@@ -33,6 +35,7 @@ const Tournament = ({
       user={user}
       users={users}
       matches={matches}
+      toggleActualResultsEditable={toggleActualResultsEditable}
     />
     <Center>
       {/* <Tabs
@@ -71,6 +74,7 @@ const Tournament = ({
             actualResultsEditable={actualResultsEditable}
             user={user}
             users={users}
+            time={time}
           />
         ))}
       </Accordion>

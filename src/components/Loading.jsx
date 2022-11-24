@@ -2,7 +2,7 @@ import React from 'react';
 import { Spinner, Text, HStack } from '@chakra-ui/react';
 import MessiWall from './MessiWall';
 
-const Loading = () => (
+const Loading = ({ version }) => (
   <MessiWall>
     <HStack
       width="100%"
@@ -27,6 +27,16 @@ const Loading = () => (
         fontSize={{ base: 'md', md: 'xl' }}
       />
     </HStack>
+    { version && (
+      <Text
+        fontSize="sm"
+        color="whiteAlpha.800"
+        marginTop={2}
+        marginBottom={-2}
+      >
+        {`Versión: ${version}`}
+      </Text>
+    )}
   </MessiWall>
 );
 

@@ -13,6 +13,7 @@ const TournamentData = ({
   user,
   users,
   matches,
+  toggleActualResultsEditable,
 }) => (
   <Flex
     marginBottom={6}
@@ -30,6 +31,7 @@ const TournamentData = ({
       name={user.displayName}
       fontSize={{ base: 'md', md: 'lg' }}
       border="1px solid #4A5568"
+      onClick={toggleActualResultsEditable}
     />
     <Box ml="3" flexGrow="1">
       <Text

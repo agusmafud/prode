@@ -1,3 +1,5 @@
+// eslint-disable-next-line no-unused-vars
+import HackTimer from 'scripts/HackTimer';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 

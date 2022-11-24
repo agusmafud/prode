@@ -2,18 +2,16 @@ import axios from 'axios';
 import { useState, useEffect } from 'react';
 
 const useTime = () => {
-  const [initialTime, setInitialTime] = useState();
-  const [minutesCounter, setMinutesCounter] = useState(0);
+  const [time, setTime] = useState();
 
   const getTime = async () => {
     try {
       // another possible solution
       // const { timeZone } = Intl.DateTimeFormat().resolvedOptions();
       const response = await axios.get('https://worldtimeapi.org/api/ip');
-      const time = response.data.unixtime;
+      const apiTime = response.data.unixtime;
 
-      setInitialTime(time);
-      setMinutesCounter(0);
+      setTime(apiTime);
       // eslint-disable-next-line no-debugger
       debugger;
     } catch (error) {
@@ -24,28 +22,15 @@ const useTime = () => {
   };
 
   useEffect(() => {
-    if (!initialTime) getTime();
-  }, [initialTime]);
+    getTime();
+  }, []);
 
   useEffect(() => {
     setTimeout(
-      () => () => initialTime && setMinutesCounter((previousState) => previousState + 1),
-      60000,
+      () => getTime(),
+      30000,
     );
-  }, [initialTime, minutesCounter]);
-
-  /* useEffect(() => {
-    setTimeout(
-      () => {
-        getTime();
-      },
-      60000 * 5,
-    );
-  }, [initialTime, minutesCounter]); */
-
-  const time = initialTime
-    ? initialTime + (minutesCounter * 60)
-    : 0;
+  }, [time]);
 
   return time;
 };

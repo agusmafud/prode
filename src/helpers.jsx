@@ -76,6 +76,11 @@ export const getMonth = (date) => {
 
   return monthNames[date.getMonth()];
 };
+export const getMonthLongName = (date) => {
+  const monthNames = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre'];
+
+  return monthNames[date.getMonth()];
+};
 export const getHours = (date) => date.getHours();
 export const getMinutes = (date) => date.getMinutes();
 
@@ -190,8 +195,9 @@ const addOrderedToMatches = ({ matches, match }) => {
 export const getDateGroups = (matches) => {
   const dateGroups = matches.reduce((acc, match) => {
     const date = getDateFromUnixTime(match.date);
+    const dayName = getDayName(date);
     const dayNumber = getDayNumber(date);
-    const month = getMonth(date);
+    const month = getMonthLongName(date);
     const groupIndex = acc.findIndex((e) => e.id === dayNumber + month);
     const groupAlreadyCreated = groupIndex !== -1;
 
@@ -217,7 +223,7 @@ export const getDateGroups = (matches) => {
         id: dayNumber + month,
         dayNumber,
         month,
-        label: `${dayNumber} - ${month}`,
+        label: `${dayName}. ${dayNumber} de ${month}`,
         matches: [{ matchId: match.id, date: match.date }],
         teams: [...match.teams],
       },

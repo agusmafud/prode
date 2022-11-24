@@ -28,7 +28,7 @@ const App = () => {
   const showLoading = !user && userLoading;
   const showTournament = !!user;
 
-  const version = '1.05';
+  const version = '1.06';
   const [actualResultsEditable, setActualResultsEditable] = useState(false);
   const toggleActualResultsEditable = () => (
     user.uid === '448AqmKAQITCjgAJ03l1RGPYrX42' && setActualResultsEditable((prevState) => !prevState)

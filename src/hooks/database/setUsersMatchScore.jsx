@@ -51,8 +51,6 @@ const setUsersMatchScore = async ({
     const orderedTournamentMatches = tournamentMatches.sort(
       (a, b) => Number(a.matchId) - Number(b.matchId),
     );
-    // eslint-disable-next-line no-debugger
-    debugger;
     setFirebaseDocument({
       db,
       item: {

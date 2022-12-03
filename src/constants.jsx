@@ -10,7 +10,7 @@ export const firebaseConfig = {
 };
 
 export const matches = [
-  {
+  /* {
     id: '00',
     date: new Date('20 November 2022 13:00:00 UTC-03:00'),
     teams: ['QA', 'EC'],
@@ -249,41 +249,91 @@ export const matches = [
     id: '47',
     date: new Date('2 December 2022 12:00:00 UTC-03:00'),
     teams: ['GH', 'UY'],
+  }, */
+  {
+    id: '48',
+    date: new Date('3 December 2022 12:00:00 UTC-03:00'),
+    teams: ['NL', 'US'],
   },
   {
-    id: '100',
-    date: new Date('1 November 2022 13:00:00 UTC-03:00'),
-    teams: ['QA', 'EC'],
+    id: '49',
+    date: new Date('3 December 2022 16:00:00 UTC-03:00'),
+    teams: ['AR', 'AU'],
   },
   {
-    id: '101',
-    date: new Date('1 November 2022 13:00:00 UTC-03:00'),
-    teams: ['SN', 'NL'],
+    id: '50',
+    date: new Date('4 December 2022 12:00:00 UTC-03:00'),
+    teams: ['FR', 'PL'],
   },
   {
-    id: '102',
-    date: new Date('1 November 2022 15:00:00 UTC-03:00'),
-    teams: ['QA', 'SN'],
+    id: '51',
+    date: new Date('4 December 2022 16:00:00 UTC-03:00'),
+    teams: ['GB-ENG', 'SN'],
   },
   {
-    id: '103',
-    date: new Date('1 November 2022 13:00:00 UTC-03:00'),
-    teams: ['EC', 'NL'],
+    id: '52',
+    date: new Date('5 December 2022 12:00:00 UTC-03:00'),
+    teams: ['JP', 'CR'],
   },
   {
-    id: '104',
-    date: new Date('1 November 2022 12:00:00 UTC-03:00'),
-    teams: ['QA', 'NL'],
+    id: '53',
+    date: new Date('5 December 2022 16:00:00 UTC-03:00'),
+    teams: ['BR', 'KR'],
   },
   {
-    id: '105',
-    date: new Date('1 November 2022 12:00:00 UTC-03:00'),
-    teams: ['EC', 'SN'],
+    id: '54',
+    date: new Date('6 December 2022 12:00:00 UTC-03:00'),
+    teams: ['MA', 'ES'],
   },
+  {
+    id: '55',
+    date: new Date('6 December 2022 16:00:00 UTC-03:00'),
+    teams: ['PT', 'CH'],
+  },
+  /*  {
+    id: '56',
+    date: new Date('2 December 2022 12:00:00 UTC-03:00'),
+    teams: ['QA', 'QA'],
+  },
+  {
+    id: '57',
+    date: new Date('2 December 2022 12:00:00 UTC-03:00'),
+    teams: ['QA', 'QA'],
+  },
+  {
+    id: '58',
+    date: new Date('2 December 2022 12:00:00 UTC-03:00'),
+    teams: ['QA', 'QA'],
+  },
+  {
+    id: '59',
+    date: new Date('2 December 2022 12:00:00 UTC-03:00'),
+    teams: ['QA', 'QA'],
+  },
+  {
+    id: '60',
+    date: new Date('2 December 2022 12:00:00 UTC-03:00'),
+    teams: ['QA', 'QA'],
+  },
+  {
+    id: '61',
+    date: new Date('2 December 2022 12:00:00 UTC-03:00'),
+    teams: ['QA', 'QA'],
+  },
+  {
+    id: '62',
+    date: new Date('2 December 2022 12:00:00 UTC-03:00'),
+    teams: ['QA', 'QA'],
+  },
+  {
+    id: '63',
+    date: new Date('2 December 2022 12:00:00 UTC-03:00'),
+    teams: ['QA', 'QA'],
+  }, */
 ];
 
 export const groups = [
-  {
+  /* {
     id: 'groupTest',
     label: 'Grupo de Prueba',
     teams: ['QA', 'EC', 'SN', 'NL'],
@@ -336,5 +386,11 @@ export const groups = [
     label: 'Grupo H',
     teams: ['PT', 'GH', 'UY', 'KR'],
     matches: ['42', '43', '44', '45', '46', '47'],
+  }, */
+  {
+    id: 'octavos',
+    label: 'Octavos',
+    teams: ['NL', 'US', 'AR', 'AU', 'FR', 'PL', 'GB-ENG', 'SN', 'JP', 'CR', 'BR', 'KR', 'MA', 'ES', 'PT', 'CH'],
+    matches: ['48', '49', '50', '51', '52', '53', '54', '55'],
   },
 ];

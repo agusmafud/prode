@@ -12,8 +12,6 @@ const useTime = () => {
       const apiTime = response.data.unixtime;
 
       setTime(apiTime);
-      // eslint-disable-next-line no-debugger
-      debugger;
     } catch (error) {
       // TODO: Catch errors
       // eslint-disable-next-line no-console

@@ -5,7 +5,7 @@ import AppLayout from 'components/AppLayout';
 import Login from 'components/Login';
 import TournamentContainer from 'containers/TournamentContainer';
 import useFirebaseApp from 'hooks/firebase/useFirebaseApp';
-import useFirebaseAuth from 'hooks/firebase/useFirebaseAuth';
+import useSimpleFirebaseAuth from 'hooks/firebase/useSimpleFirebaseAuth';
 import useFirestore from 'hooks/firebase/useFirestore';
 import useSetUser from 'hooks/database/useSetUser';
 
@@ -18,9 +18,7 @@ const App = () => {
     user,
     userLoading,
     handleSignIn,
-    saveLogin,
-    setSaveLogin,
-  } = useFirebaseAuth(firebaseApp);
+  } = useSimpleFirebaseAuth(firebaseApp);
   const db = useFirestore(firebaseApp);
   const users = useSetUser({ db, user });
 
@@ -41,8 +39,8 @@ const App = () => {
           <Login
             handleSignIn={handleSignIn}
             version={version}
-            saveLogin={saveLogin}
-            setSaveLogin={setSaveLogin}
+            saveLogin={false}
+            setSaveLogin={() => {}}
           />
         )}
         {showLoading && <Loading version={version} />}

@@ -1,17 +1,32 @@
 // eslint-disable-next-line no-unused-vars
-import HackTimer from 'scripts/HackTimer';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from 'react-router-dom';
 
 import App from './App';
+import JuanchoMode from './JuanchoMode';
 // eslint-disable-next-line import/no-named-as-default, import/no-named-as-default-member
 import reportWebVitals from './reportWebVitals';
+
+const router = createBrowserRouter([
+  {
+    path: '/juancho',
+    element: <JuanchoMode />,
+  },
+  {
+    path: '/',
+    element: <App />,
+  },
+]);
 
 // eslint-disable-next-line no-undef
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <RouterProvider router={router} />
   </React.StrictMode>,
 );
 

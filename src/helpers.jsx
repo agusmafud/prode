@@ -107,13 +107,13 @@ const createMatchPoints = ({ teamA, teamB }) => {
     (teamA.goals === teamB.goals && teamA.actualGoals === teamB.actualGoals)
     || (teamA.goals > teamB.goals && teamA.actualGoals > teamB.actualGoals)
     || (teamA.goals < teamB.goals && teamA.actualGoals < teamB.actualGoals)
-  ) return ({ state: true, points: 3 });
+  ) return ({ state: true, points: 4 });
   return ({ state: false, points: 0 });
 };
 
 const createExactPoints = ({ teamA, teamB }) => {
   if (teamA.goals === teamA.actualGoals && teamB.goals === teamB.actualGoals) {
-    return ({ state: true, points: 1 });
+    return ({ state: true, points: 2 });
   }
   return ({ state: false, points: 0 });
 };
